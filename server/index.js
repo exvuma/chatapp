@@ -9,7 +9,7 @@ const serverless = require("serverless-http");
 const router = express.Router();
 router.post("/", (req, res) => res.json({ postBody: req.body }));
 app.use(bodyParser.json());
-app.use("/.netlify/functions/server", router); // path must route to lambda
+app.use("/api", router); // path must route to lambda
 
 app.use(
   express.static("/Users/victoriabernard/my-repos/raise-interview/build")

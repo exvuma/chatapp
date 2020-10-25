@@ -1,4 +1,4 @@
-This is a basic chat app hosted on Digital Ocean at
+This is a basic chat app hosted on Netlify at
 
 Using:
 
@@ -18,16 +18,19 @@ Then start server
 ```
 cd server
 yarn
-node index.js
+yarn start
 ```
+
+## To build
+
+Same as above but with `yarn build`
 
 ## To deploy:
 
-<!DOCTYPE html>
+CI is set up to deploy automatically on Netlify
 
-<object
-type="text/html"
-data="/.netlify/functions/server"
-style="width:100%;height:100%;"
+TO test on your own Netlify account
 
->
+- Set up a Netlify site
+- Connect the Netlify site to your repo (e.g. https://github.com/exvuma/chatapp)
+- Functions and the static site will auto deploy
