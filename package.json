@@ -12,7 +12,7 @@
     "socket.io": "^2.3.0"
   },
   "scripts": {
-    "start": "yarn && node api.js",
+    "start": "node api.js",
     "heroku-postbuild": "cd ./client && yarn && yarn run build"
   }
 }

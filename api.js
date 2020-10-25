@@ -29,7 +29,7 @@ const appendMsgs = (msg) => {
   messages = [...messages, msg];
   return messages;
 };
-http.listen(3001, () => {
+http.listen(process.env.PORT, () => {
   console.log("listening on *:3001");
 });
 app.get("/*.html", (req, res) => {
