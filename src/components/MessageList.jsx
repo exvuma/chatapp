@@ -3,9 +3,9 @@ import { Box, Link, TextField, Grid, Paper, Button } from "@material-ui/core";
 import sendImg from "./send.png";
 
 import socketIOClient from "socket.io-client";
-const ENDPOINT = "http://localhost:3001";
+const ENDPOINT = process.env.API_ENDPOINT || "http://localhost:3001";
 const GET_MSGS_ENDPOINT = ENDPOINT + "/api/messages";
-const LOCAL_DEBUG = process.env === "local" || false; // TODO: remove true
+const LOCAL_DEBUG = process.env.DEBUG || false; // TODO: remove true
 const MOCK_MSGS = [
   { message: "Hi there", author: "John", time: 1603741045962 },
   { message: "What's up", author: "Victoria", time: 1603741045962 },

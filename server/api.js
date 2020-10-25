@@ -3,13 +3,16 @@ var app = express();
 var connect = require("connect");
 // var app = connect();
 const bodyParser = require("body-parser");
-const serverless = require("serverless-http");
+// const serverless = require("serverless-http");
+const dotenv = require("dotenv");
+dotenv.config();
+console.log(process.env);
 
 // Route to Netlify for deploying
-const router = express.Router();
-router.post("/", (req, res) => res.json({ postBody: req.body }));
+// const router = express.Router();
+// router.post("/", (req, res) => res.json({ postBody: req.body }));
 app.use(bodyParser.json());
-app.use("/api", router); // path must route to lambda
+// app.use("/server/functions", router); // path must route to lambda
 
 app.use(
   express.static("/Users/victoriabernard/my-repos/raise-interview/build")
@@ -58,14 +61,6 @@ io.on("connection", (socket) => {
   socket.on("disconnect", (reason) => {
     console.log("user disconnected", reason);
   });
-  socket.on("FromAPI", (data) => {
-    console.log("FromAPI");
-    console.log("data", data);
-  });
-  socket.on("MsgReceived", (data) => {
-    console.log("MsgReceived here");
-    console.log("data", data);
-  });
   socket.on("NewMessage", (data) => {
     console.log("NewMessage");
     console.log("NewMessage data", data);
@@ -79,4 +74,4 @@ io.on("connection", (socket) => {
     // res.send(JSON.stringify(messages), 200);
   });
 });
-module.exports.handler = serverless(app);
+// module.exports.handler = serverless(app);
