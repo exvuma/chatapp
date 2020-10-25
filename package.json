@@ -12,8 +12,7 @@
     "socket.io": "^2.3.0"
   },
   "scripts": {
-    "build": "netlify-lambda build",
-    "start": "yarn && node functions/index.js",
-    "heroku-postbuild": "cd ../client && yarn && yarn run build"
+    "start": "yarn && node api.js",
+    "heroku-postbuild": "cd ./client && yarn && yarn run build"
   }
 }
