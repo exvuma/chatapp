@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { Box, Link, TextField, Grid, Paper, Button } from "@material-ui/core";
 import sendImg from "./send.png";
-
 import socketIOClient from "socket.io-client";
-const ENDPOINT = process.env.API_ENDPOINT || "http://localhost:3001";
+
+const ENDPOINT = process.env.API_ENDPOINT || "/";
 const GET_MSGS_ENDPOINT = ENDPOINT + "/api/messages";
 const LOCAL_DEBUG = process.env.DEBUG || false; // TODO: remove true
 const MOCK_MSGS = [
