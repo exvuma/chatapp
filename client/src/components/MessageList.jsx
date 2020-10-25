@@ -4,7 +4,7 @@ import sendImg from "./send.png";
 import socketIOClient from "socket.io-client";
 
 const ENDPOINT = process.env.API_ENDPOINT || "/";
-const GET_MSGS_ENDPOINT = ENDPOINT + "/api/messages";
+const GET_MSGS_ENDPOINT = ENDPOINT + "api/messages";
 const LOCAL_DEBUG = process.env.DEBUG || false; // TODO: remove true
 const MOCK_MSGS = [
   { message: "Hi there", author: "John", time: 1603741045962 },
