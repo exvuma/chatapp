@@ -3,6 +3,13 @@ var app = express();
 var connect = require("connect");
 // var app = connect();
 const bodyParser = require("body-parser");
+const serverless = require("serverless-http");
+
+// Route to Netlify for deploying
+const router = express.Router();
+router.post("/", (req, res) => res.json({ postBody: req.body }));
+app.use(bodyParser.json());
+app.use("/.netlify/functions/server", router); // path must route to lambda
 
 app.use(
   express.static("/Users/victoriabernard/my-repos/raise-interview/build")
@@ -46,6 +53,7 @@ app.get("/api/messages", (req, res) => {
 });
 io.on("connection", (socket) => {
   console.log("a user connected");
+  io.emit("NewUser");
   socket.broadcast.emit("NewUser");
   socket.on("disconnect", (reason) => {
     console.log("user disconnected", reason);
@@ -64,8 +72,11 @@ io.on("connection", (socket) => {
     messages = appendMsgs(data);
     io.emit("MsgReceived", JSON.stringify(messages));
     socket.broadcast.emit("MsgReceived", JSON.stringify(messages));
+    io.emit("NewUser");
+    socket.broadcast.emit("NewUser");
     console.log(messages);
     console.log("succccess on emitted", messages);
     // res.send(JSON.stringify(messages), 200);
   });
 });
+module.exports.handler = serverless(app);
