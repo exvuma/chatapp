@@ -1,17 +1,19 @@
 {
   "name": "chatapp-server",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "api.js",
   "license": "MIT",
   "dependencies": {
     "body-parser": "^1.19.0",
     "connect": "^3.7.0",
+    "dotenv": "^8.2.0",
     "express": "4.15.2",
     "serverless-http": "^2.6.0",
     "socket.io": "^2.3.0"
   },
   "scripts": {
     "build": "netlify-lambda build",
-    "start": "node index.js"
+    "start": "yarn && node functions/index.js",
+    "heroku-postbuild": "cd ../client && yarn && yarn run build"
   }
 }

@@ -1,12 +1,11 @@
 const express = require("express");
 var app = express();
-var connect = require("connect");
+// var connect = require("connect");
 // var app = connect();
 const bodyParser = require("body-parser");
 // const serverless = require("serverless-http");
 const dotenv = require("dotenv");
 dotenv.config();
-console.log(process.env);
 
 // Route to Netlify for deploying
 // const router = express.Router();
@@ -55,12 +54,12 @@ app.get("/api/messages", (req, res) => {
   res.send(JSON.stringify(messages), 200);
 });
 io.on("connection", (socket) => {
-  console.log("a user connected");
+  // console.log("a user connected");
   io.emit("NewUser");
   socket.broadcast.emit("NewUser");
-  socket.on("disconnect", (reason) => {
-    console.log("user disconnected", reason);
-  });
+  // socket.on("disconnect", (reason) => {
+  // console.log("user disconnected", reason);
+  // });
   socket.on("NewMessage", (data) => {
     console.log("NewMessage");
     console.log("NewMessage data", data);
