@@ -13,9 +13,7 @@ dotenv.config();
 app.use(bodyParser.json());
 // app.use("/server/functions", router); // path must route to lambda
 
-app.use(
-  express.static("/Users/victoriabernard/my-repos/raise-interview/build")
-);
+app.use(express.static("./client/build"));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 var http = require("http").createServer(app);
