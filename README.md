@@ -6,9 +6,10 @@ Using:
 - Node 8.4
 - socket.io
 
-## To run the dev server
+## To run the client (react app) server
 
 ```
+cd client
 yarn
 yarn start
 ```
@@ -16,7 +17,6 @@ yarn start
 Then start server
 
 ```
-cd server
 yarn
 yarn start
 ```
@@ -27,10 +27,9 @@ Same as above but with `yarn build`
 
 ## To deploy:
 
-CI is set up to deploy automatically on Netlify
+CI is set up to deploy automatically on Heroku
 
-TO test on your own Netlify account
+TO test on your own Heroku account
 
-- Set up a Netlify site
-- Connect the Netlify site to your repo (e.g. https://github.com/exvuma/chatapp)
-- Functions and the static site will auto deploy
+- Set up a Heroku site
+- Connect the Heroku site to your repo (e.g. https://github.com/exvuma/chatapp)
