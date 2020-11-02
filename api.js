@@ -4,6 +4,7 @@ var app = express();
 // var app = connect();
 const bodyParser = require("body-parser");
 // const serverless = require("serverless-http");
+var cors = require("cors");
 const dotenv = require("dotenv");
 dotenv.config();
 
@@ -19,17 +20,20 @@ app.use(bodyParser.json());
 var http = require("http").createServer(app);
 var io = require("socket.io")(http);
 // const socket = io();
-
+const CORSopts = {
+  origin: "localhost:3000",
+  optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
+};
+// app.options("*", cors());
 var messages = [];
+app.use(cors());
 
 const appendMsgs = (msg) => {
   console.log("append", msg.message);
   messages = [...messages, msg];
   return messages;
 };
-http.listen(process.env.PORT, () => {
-  console.log("listening on *:3001");
-});
+
 app.get("/*.html", (req, res) => {
   //   res.sendFile(__dirname + "../build/index.html");
   res.sendFile(
@@ -72,3 +76,6 @@ io.on("connection", (socket) => {
   });
 });
 // module.exports.handler = serverless(app);
+http.listen(process.env.API_PORT, () => {
+  console.log("listening on *:" + process.env.API_PORT);
+});

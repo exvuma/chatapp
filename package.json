@@ -4,15 +4,28 @@
   "main": "api.js",
   "license": "MIT",
   "dependencies": {
+    "@material-ui/core": "^4.11.0",
     "body-parser": "^1.19.0",
     "connect": "^3.7.0",
+    "cors": "^2.8.5",
     "dotenv": "^8.2.0",
     "express": "4.15.2",
+    "fontsource-roboto": "^3.0.3",
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1",
+    "react-scripts": "0.9.x",
     "serverless-http": "^2.6.0",
-    "socket.io": "^2.3.0"
+    "socket.io": "^2.3.0",
+    "socket.io-client": "^2.3.1",
+    "uuid": "^8.3.1"
   },
   "scripts": {
     "start": "node api.js",
-    "heroku-postbuild": "cd ./client && yarn && yarn run build"
+    "heroku-postbuild": "cd ./client && yarn && yarn run build",
+    "start:client": "cd ./client && react-scripts start",
+    "start:server": "node api.js",
+    "build:client": "cd ./client && react-scripts build",
+    "test:client": "cd ./client && react-scripts test --env=jsdom",
+    "eject:client": "cd ./client && react-scripts eject"
   }
 }

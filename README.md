@@ -9,9 +9,8 @@ Using:
 ## To run the client (react app) server
 
 ```
-cd client
 yarn
-yarn start
+yarn start:client
 ```
 
 Then start server
