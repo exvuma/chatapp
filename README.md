@@ -1,4 +1,4 @@
-This is a basic chat app hosted on Netlify at
+This is a basic chat app hosted on Heroku at
 
 Using:
 

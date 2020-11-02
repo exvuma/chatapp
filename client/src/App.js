@@ -12,6 +12,7 @@ import {
 } from "@material-ui/core";
 import "fontsource-roboto";
 import { MessageList } from "./components/MessageList";
+import { RoomsList } from "./components/RoomsList";
 
 function App() {
   const [isEditingName, setIsEditingName] = useState(true);
@@ -35,6 +36,8 @@ function App() {
           </Typography>
         </Toolbar>
       </AppBar>
+      {/* <RoomsList /> */}
+      <RoomsList />
       <Box style={{ margin: "3rem" }}>
         {!isEditingName && <MessageList author={name} />}
         {isEditingName && (

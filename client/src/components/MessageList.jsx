@@ -44,8 +44,8 @@ export const MessageList = (props) => {
       console.log(`I'm connected with the back-end`);
     });
 
-    socket.on("MsgReceived", (data) => {
-      console.log("MsgReceived on client", data);
+    socket.on("MsgCreated", (data) => {
+      console.log("MsgCreated on client", data);
       setMsgs([...msgs, ...JSON.parse(data)]);
     });
     // CLEAN UP THE EFFECT
