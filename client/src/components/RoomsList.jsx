@@ -23,8 +23,9 @@ const socket = socketIOClient(API_HOST);
 const MOCK_ROOMS = ["Home", "General", "Social", "Incidents"];
 
 export const RoomsList = (props) => {
+  const { onRoomChange, currRoom } = props;
   //   const classes = useStyles();
-  const [currRoom, setCurrRoom] = React.useState("Home");
+  // const [currRoom, setCurrRoom] = React.useState("Home");
   const [rooms, setRooms] = React.useState(["Home"]);
   const [inputValue, setInputValue] = useState("");
   const [error, setError] = useState("");
@@ -52,7 +53,11 @@ export const RoomsList = (props) => {
   }, []);
   return (
     <div>
-      <ResponsiveDrawer rooms={rooms} currRoom={currRoom} />
+      <ResponsiveDrawer
+        rooms={rooms}
+        currRoom={currRoom}
+        onRoomChange={onRoomChange}
+      ></ResponsiveDrawer>
     </div>
   );
 };

@@ -21,8 +21,13 @@ var http = require("http").createServer(app);
 var io = require("socket.io")(http);
 
 // app.options("*", cors());
-var messages = [];
-var rooms = [];
+var messages = [
+  { message: "aaah", author: "John", time: 1604360490542, roomId: "someid" },
+  { message: "asda", author: "John", time: 1604360494378, roomId: "someid" },
+  { message: "asfds", author: "asd", time: 1604360763025, roomId: "someid" },
+  { name: "Room 11", author: "Victoria", time: 1604360763025, roomId: "home" },
+];
+var rooms = ["someid", "home"];
 app.use(cors());
 
 const appendMsgs = (msg) => {
@@ -55,7 +60,7 @@ app.post("/api/messages", (req, res) => {
   res.send(JSON.stringify(messages), 200);
 });
 app.get("/api/messages", (req, res) => {
-  res.send(JSON.stringify(rooms), 200);
+  res.send(JSON.stringify(messages), 200);
 });
 app.post("/api/rooms", (req, res) => {
   console.log("posted room, ", req.body);
@@ -66,6 +71,12 @@ app.post("/api/rooms", (req, res) => {
 });
 app.get("/api/rooms", (req, res) => {
   res.send(JSON.stringify(rooms), 200);
+});
+app.get("/api/rooms/:id/messages", (req, res) => {
+  console.log(req.params.id);
+  const roomId = req.params.id;
+  const roomMsgs = messages.filter((msg) => msg.roomId === roomId);
+  res.send(JSON.stringify(roomMsgs), 200);
 });
 io.on("connection", (socket) => {
   // console.log("a user connected");

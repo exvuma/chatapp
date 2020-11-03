@@ -12,13 +12,20 @@ import {
 } from "@material-ui/core";
 import "fontsource-roboto";
 import { MessageList } from "./components/MessageList";
+import { Room } from "./components/Room";
 import { RoomsList } from "./components/RoomsList";
 
 function App() {
   const [isEditingName, setIsEditingName] = useState(true);
+  const [currRoom, setCurrRoom] = useState("home");
   const [name, setName] = useState("");
+  const onRoomChange = (event) => {
+    console.log(event.target);
+    setCurrRoom(event.target.value);
+  };
   return (
     <div className="App">
+      <RoomsList currRoom={currRoom} onRoomChange={setCurrRoom}></RoomsList>
       <AppBar position="static">
         <Toolbar>
           <IconButton
@@ -36,10 +43,10 @@ function App() {
           </Typography>
         </Toolbar>
       </AppBar>
-      {/* <RoomsList /> */}
-      <RoomsList />
+
+      {/* </RoomsList> */}
       <Box style={{ margin: "3rem" }}>
-        {!isEditingName && <MessageList author={name} />}
+        {!isEditingName && <Room roomId={currRoom} author={name} />}
         {isEditingName && (
           <Box className="App-intro">
             <InputLabel>What's your name ?</InputLabel>
