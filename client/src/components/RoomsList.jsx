@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import socketIOClient from 'socket.io-client';
+import { CreateRoom } from './CreateRoom';
 import { Sidebar } from './Sidebar';
 const dotenv = require('dotenv');
 dotenv.config({ path: '../.env', debug: true });
@@ -18,6 +19,9 @@ export const RoomsList = props => {
   const [rooms, setRooms] = React.useState(['Home']);
   const [] = useState('');
   const [error, setError] = useState('');
+  const appendRoom = room => {
+    setRooms([...rooms, room]);
+  };
   async function fetchRooms() {
     if (LOCAL_DEBUG) {
       return setRooms(MOCK_ROOMS);
@@ -39,12 +43,30 @@ export const RoomsList = props => {
   }
   useEffect(() => {
     fetchRooms();
-  }, []);
+  }, [rooms]);
+  // TODO: watch for onRoomCreated socket
+  // useEffect(() => {
+  //   socket.on('connection', () => {
+  //     console.log(`I'm connected with the back-end`);
+  //   });
+
+  //   socket.on('RoomCreated', data => {
+  //     console.log('RoomCreated on client', data);
+  //     setMsgs([...msgs, ...JSON.parse(data)]);
+  //   });
+  //   // CLEAN UP THE EFFECT
+  //   return () => {
+  //     socket.disconnect();
+  //   };
+  // }, []);
   return (
-    <Sidebar
-      rooms={rooms}
-      currRoom={currRoom}
-      onRoomChange={onRoomChange}
-    ></Sidebar>
+    <div>
+      <Sidebar
+        rooms={rooms}
+        currRoom={currRoom}
+        onRoomChange={onRoomChange}
+      ></Sidebar>
+      <CreateRoom setRoom={appendRoom} />
+    </div>
   );
 };
