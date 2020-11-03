@@ -11,6 +11,7 @@ import {
 import ResponsiveDrawer from "./ResponsiveDrawer";
 import sendImg from "./send.png";
 import socketIOClient from "socket.io-client";
+import Drawer2 from "./Drawer";
 const dotenv = require("dotenv");
 dotenv.config({ path: "../.env", debug: true });
 
@@ -52,12 +53,10 @@ export const RoomsList = (props) => {
     fetchRooms();
   }, []);
   return (
-    <div>
-      <ResponsiveDrawer
-        rooms={rooms}
-        currRoom={currRoom}
-        onRoomChange={onRoomChange}
-      ></ResponsiveDrawer>
-    </div>
+    <Drawer2
+      rooms={rooms}
+      currRoom={currRoom}
+      onRoomChange={onRoomChange}
+    ></Drawer2>
   );
 };
