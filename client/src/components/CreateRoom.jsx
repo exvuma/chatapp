@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Box, Link, TextField, Grid, Paper, Button } from '@material-ui/core';
+import { MOCK_ROOMS } from '../mocks';
 import sendImg from './send.png';
 import socketIOClient from 'socket.io-client';
 const dotenv = require('dotenv');
@@ -9,24 +10,11 @@ const ENDPOINT = process.env.REACT_APP_API_ENDPOINT || '/';
 const API_HOST = process.env.REACT_APP_API_HOST || '/';
 const POST_ROOM_ENDPOINT = ENDPOINT + '/rooms';
 const LOCAL_DEBUG = process.env.DEBUG || false; // TODO: remove true
-const MOCK_ROOMS = [
-  {
-    name: 'Room 1',
-    author: 'John',
-    time: 1603741045962,
-    members: ['Victoria', 'John'],
-  },
-  {
-    name: 'Room 2',
-    author: 'Victoria',
-    time: 1603741045962,
-    members: ['Victoria', 'John'],
-  },
-];
+
 const socket = socketIOClient(API_HOST);
 
 export const CreateRoom = props => {
-  const { setRoom } = props;
+  const { onRoomsPost, author } = props;
   const [msgs, setMsgs] = useState([]);
   const [inputValue, setInputValue] = useState('');
   const [error, setError] = useState('');
@@ -59,11 +47,17 @@ export const CreateRoom = props => {
 
   const appendRoom = async event => {
     event.preventDefault();
-    const roomData = { ...MOCK_ROOMS[0], name: inputValue }; //{inputValue}
-    const resp = await postRoom(roomData);
-    setRoom(roomData);
-    console.log(resp);
     const time = Date.now();
+
+    const roomData = {
+      ...MOCK_ROOMS[0],
+      time,
+      author,
+      id: time.toString(),
+      name: inputValue,
+    }; //{inputValue}
+    onRoomsPost(roomData);
+    const resp = await postRoom(roomData);
     // socket.emit('NewMessage', {
     //   message: inputValue,
     //   author: props.author,
@@ -79,7 +73,7 @@ export const CreateRoom = props => {
       style={{
         bottom: 0,
         width: '100%',
-        position: 'absolute',
+        // position: 'absolute',
         display: 'flex',
         //   margin: '3rem',
       }}
@@ -106,7 +100,7 @@ export const CreateRoom = props => {
             flex: 1,
           }}
         >
-          <img src={sendImg} alt={'Send'} style={{ width: '5%' }} />
+          <img src={sendImg} alt={'Send'} style={{ width: '40%' }} />
         </Button>
       </form>
     </Box>

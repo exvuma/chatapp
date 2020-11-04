@@ -1,4 +1,3 @@
-import React, { useState } from 'react';
 import './App.css';
 import {
   Box,
@@ -11,18 +10,24 @@ import {
   Button,
   Grid,
   Container,
-  Drawer,
 } from '@material-ui/core';
 import 'fontsource-roboto';
-import { MessageList } from './components/MessageList';
 import { Room } from './components/Room';
 import { RoomsList } from './components/RoomsList';
+import React, { useState, useEffect } from 'react';
+const dotenv = require('dotenv');
+dotenv.config({ path: '../.env', debug: true });
+
+const ENDPOINT = process.env.REACT_APP_API_ENDPOINT || '/';
+const GET_ROOMS_ENDPOINT = ENDPOINT + '/rooms';
+const LOCAL_DEBUG = process.env.DEBUG || false; // TODO: remove true
+import { MOCK_ROOMS } from './mocks';
 
 const SignInCard = props => {
   const { setIsEditingName, name, setName } = props;
   return (
     <Box className='App-intro'>
-      <AppBar position='' className='makeStyles-appBar-2'>
+      <AppBar className='makeStyles-appBar-2'>
         <Toolbar>
           <IconButton
             edge='start'
@@ -59,12 +64,43 @@ const SignInCard = props => {
 };
 function App() {
   const [isEditingName, setIsEditingName] = useState(false);
-  const [currRoom, setCurrRoom] = useState('home');
+  const [currRoomId, setcurrRoomId] = useState('home');
   const [name, setName] = useState('Name');
-  const onRoomChange = event => {
-    console.log(event.target);
-    setCurrRoom(event.target.value);
-  };
+
+  const [rooms, setRooms] = useState(MOCK_ROOMS);
+  const [currRoom, setCurrRoom] = useState(MOCK_ROOMS[0]);
+  const [, setError] = useState('');
+  async function fetchRooms() {
+    if (LOCAL_DEBUG) {
+      return setRooms(MOCK_ROOMS);
+    }
+    return fetch(GET_ROOMS_ENDPOINT)
+      .then(res => res.json())
+      .then(body => {
+        setRooms(body);
+      })
+      .catch(error => {
+        console.error('Error: ', error);
+        if (error.name === 'TypeError') {
+          return setError(
+            'Failed to fetch at ' +
+              GET_ROOMS_ENDPOINT +
+              ' are you sure the server is running there? '
+          );
+        }
+        return setError(error.toString());
+      });
+  }
+  useEffect(() => {
+    fetchRooms();
+    console.log('use effect room');
+  }, []);
+  useEffect(() => {
+    console.log('her', currRoomId);
+    console.log(rooms.find(room => room.id !== currRoomId));
+    setCurrRoom(rooms.find(room => room.id == currRoomId) || MOCK_ROOMS[0]);
+  }, [currRoomId, rooms]);
+
   return (
     <div>
       {isEditingName && (
@@ -76,32 +112,33 @@ function App() {
       )}
       {!isEditingName && (
         <div>
-          <Container>
-            <AppBar position='' className='makeStyles-appBar-2'>
-              <Toolbar>
-                <IconButton
-                  edge='start'
-                  className={'classes.menuButton'}
-                  color='inherit'
-                  aria-label='menu'
-                ></IconButton>
-                <Typography variant='h6' noWrap>
-                  {!isEditingName && `Hi, you're chatting as ${name}`}
-                </Typography>
-              </Toolbar>
-            </AppBar>
-          </Container>
-          <Grid container spacing={3}>
+          <Grid container spacing={0}>
             <Grid item xs={3}>
               <RoomsList
-                currRoom={currRoom}
-                onRoomChange={setCurrRoom}
+                currRoomId={currRoomId}
+                onRoomChange={setcurrRoomId}
+                author={name}
+                rooms={rooms}
+                setRooms={setRooms}
               ></RoomsList>
             </Grid>
             <Grid item xs={9}>
+              <AppBar position='static'>
+                <Toolbar>
+                  <IconButton
+                    edge='start'
+                    className={'classes.menuButton'}
+                    color='inherit'
+                    aria-label='menu'
+                  ></IconButton>
+                  <Typography variant='h6' noWrap>
+                    Hi, you're chatting as {name}
+                  </Typography>
+                </Toolbar>
+              </AppBar>
               {/* <Typography paragraph>Lorem ipsum dolor sit amet</Typography> */}
               <Box style={{ margin: '3rem' }}>
-                {!isEditingName && <Room roomId={currRoom} author={name} />}
+                <Room room={currRoom} author={name} />
               </Box>
             </Grid>
           </Grid>
