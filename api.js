@@ -73,6 +73,8 @@ const appendMsgs = msg => {
 };
 const appendRooms = room => {
   console.log('append', room);
+  //TODO validate room type
+
   rooms = [...rooms, room];
   return rooms;
 };

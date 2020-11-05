@@ -5,6 +5,7 @@ import {
   Select,
   TextField,
   InputLabel,
+  Popover,
   Checkbox,
   ListItemText,
   MenuItem,
@@ -14,6 +15,7 @@ import {
   Button,
 } from '@material-ui/core';
 import { MOCK_ROOMS } from '../mocks';
+import { SelectNames } from './SelectNames';
 import sendImg from './send.png';
 import plusImg from '../static/plus.png';
 import socketIOClient from 'socket.io-client';
@@ -27,56 +29,50 @@ const LOCAL_DEBUG = process.env.DEBUG || false; // TODO: remove true
 
 const socket = socketIOClient(API_HOST);
 
-export const SelectNames = props => {
-  const { names, selectedNames, setSelectedNames } = props;
-  const [personName, setPersonName] = React.useState([]);
+export const CreateRoom = props => {
+  const { onRoomsPost, author, members } = props;
 
-  const handleChange = event => {
-    setPersonName(event.target.value);
-    console.log(event.target.value);
-    setSelectedNames(event.target.value);
+  const [anchorEl, setAnchorEl] = React.useState(null);
+
+  const handleClick = event => {
+    setAnchorEl(event.currentTarget);
   };
 
-  const handleChangeMultiple = event => {
-    const { options } = event.target;
-    const value = [];
-    for (let i = 0, l = options.length; i < l; i += 1) {
-      if (options[i].selected) {
-        value.push(options[i].value);
-      }
-    }
-    setPersonName(value);
+  const handleClose = () => {
+    setAnchorEl(null);
   };
 
+  const open = Boolean(anchorEl);
+  const id = open ? 'simple-popover' : undefined;
   return (
     <React.Fragment>
-      <InputLabel id='demo-mutiple-checkbox-label'>Select Members</InputLabel>
-      <Select
-        labelId='demo-mutiple-checkbox-label'
-        id='demo-mutiple-checkbox'
-        multiple
-        value={personName}
-        onChange={handleChange}
-        input={<Input />}
-        renderValue={selected => selected.join(', ')}
-        // MenuProps={MenuProps}
+      <Popover id={id} open={open} anchorEl={anchorEl} onClose={handleClose}>
+        <CreateRoomForm
+          onRoomsPost={onRoomsPost}
+          author={author}
+          members={members}
+        />
+      </Popover>
+      <Button
+        type='submit'
+        form='create-room-form2'
+        onClick={handleClick}
+        style={{
+          flex: 1,
+        }}
       >
-        {names.map(name => (
-          <MenuItem key={name} value={name}>
-            <Checkbox checked={personName.indexOf(name) > -1} />
-            <ListItemText primary={name} />
-          </MenuItem>
-        ))}
-      </Select>
+        <img src={plusImg} alt={'Send'} style={{ width: '40%' }} />
+      </Button>
     </React.Fragment>
   );
 };
-export const CreateRoom = props => {
+
+const CreateRoomForm = props => {
   const { onRoomsPost, author, members } = props;
   const [msgs, setMsgs] = useState([]);
   const [inputValue, setInputValue] = useState('');
   const [error, setError] = useState('');
-  const [selectedNames, setSelectedNames] = React.useState([]);
+  const [selectedNames, setSelectedNames] = useState([]);
   const [openNameSelect, setOpenNameSelect] = useState(false);
 
   async function postRoom(data) {
@@ -107,7 +103,6 @@ export const CreateRoom = props => {
         return setError(error.toString());
       });
   }
-
   const appendRoom = async event => {
     event.preventDefault();
     const time = Date.now();
@@ -117,7 +112,7 @@ export const CreateRoom = props => {
       author,
       id: time.toString(),
       name: inputValue,
-      members: selectedNames,
+      members: selectedNames || [],
     }; //{inputValue}
     onRoomsPost(roomData);
     const resp = await postRoom(roomData);
@@ -129,49 +124,50 @@ export const CreateRoom = props => {
     setOpenNameSelect(true);
   };
   return (
-    <form
-      onSubmit={appendRoom}
-      noValidate
-      autoComplete='off'
-      id='create-room-form'
-      style={{
-        justifyContent: 'center',
-        display: 'flex',
-        flexDirection: 'column',
-      }}
-    >
-      <div
+    <Box display='flex'>
+      Create a New Room
+      <form
+        onSubmit={appendRoom}
+        noValidate
+        autoComplete='off'
+        id='create-room-form'
         style={{
-          alignItems: 'center',
           justifyContent: 'center',
           display: 'flex',
-          flexDirection: 'row',
+          flexDirection: 'column',
         }}
       >
-        <TextField
-          label={'Create New Room'}
-          id='standard-basic'
-          value={inputValue}
-          onChange={handleInputMsgChange}
-          style={{ flex: 2 }}
-        />
-        <Button
-          type='submit'
-          form='create-room-form'
+        <div
           style={{
-            flex: 1,
+            alignItems: 'center',
+            justifyContent: 'center',
+            display: 'flex',
+            flexDirection: 'row',
           }}
         >
-          <img src={plusImg} alt={'Send'} style={{ width: '40%' }} />
-        </Button>
-      </div>
-      {openNameSelect && (
+          <TextField
+            label={'Create New Room'}
+            id='standard-basic'
+            value={inputValue}
+            onChange={handleInputMsgChange}
+            style={{ flex: 2 }}
+          />
+          <Button
+            type='submit'
+            form='create-room-form'
+            style={{
+              flex: 1,
+            }}
+          >
+            <img src={plusImg} alt={'Send'} style={{ width: '40%' }} />
+          </Button>
+        </div>
         <SelectNames
           names={members}
           selectedNames={selectedNames}
           setSelectedNames={setSelectedNames}
         />
-      )}
-    </form>
+      </form>
+    </Box>
   );
 };

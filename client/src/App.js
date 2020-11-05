@@ -71,15 +71,23 @@ function App() {
 
   const [rooms, setRooms] = useState(MOCK_ROOMS);
   const [currRoom, setCurrRoom] = useState(MOCK_ROOMS[0]);
-  const [members, setMembers] = useState(
-    rooms
-      .reduce((membsArr, room) => [...membsArr, ...room.members], [])
-      .reduce(
-        (membsArr, m1) =>
-          membsArr.includes(m1) ? membsArr : [...membsArr, m1],
-        []
-      )
-  );
+  const roomsToMembs = roomsArr => {
+    return !roomsArr
+      ? []
+      : roomsArr
+          .reduce((membsArr, room) => {
+            console.log(membsArr);
+            console.log(room.members);
+            console.log(room);
+            return [...membsArr, ...room.members];
+          }, [])
+          .reduce(
+            (membsArr, m1) =>
+              membsArr.includes(m1) ? membsArr : [...membsArr, m1],
+            []
+          );
+  };
+  const [members, setMembers] = useState([]);
   const [, setError] = useState('');
 
   async function postName(name) {
@@ -112,15 +120,7 @@ function App() {
     }
   }, [isEditingName]);
   useEffect(() => {
-    setMembers(
-      rooms
-        .reduce((membsArr, room) => [...membsArr, ...room.members], [])
-        .reduce(
-          (membsArr, m1) =>
-            membsArr.includes(m1) ? membsArr : [...membsArr, m1],
-          []
-        )
-    );
+    setMembers(roomsToMembs(rooms));
   }, [rooms]);
   async function fetchRooms() {
     if (LOCAL_DEBUG) {
