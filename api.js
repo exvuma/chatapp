@@ -79,6 +79,13 @@ const appendRooms = room => {
   rooms = [...rooms, room];
   return rooms;
 };
+const appendUsers = name => {
+  // All users should always exist in the home room
+  rooms = rooms.map(room =>
+    room.id === 'home' ? { ...room, members: [...room.members, name] } : room
+  );
+  return rooms;
+};
 
 app.get('/*.html', (req, res) => {
   //   res.sendFile(__dirname + "../build/index.html");
@@ -97,6 +104,9 @@ app.post('/api/messages', (req, res) => {
   io.emit('FromAPI', JSON.stringify(req.body));
   messages = appendMsgs(req.body);
   res.send(JSON.stringify(messages), 200);
+});
+app.post('/api/names', (req, res) => {
+  res.send(JSON.stringify(appendUsers(req.body.name)), 200);
 });
 app.get('/api/messages', (req, res) => {
   res.send(JSON.stringify(messages), 200);

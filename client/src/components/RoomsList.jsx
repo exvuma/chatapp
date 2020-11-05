@@ -13,7 +13,7 @@ import { MOCK_ROOMS } from '../mocks';
 // const MOCK_ROOMS = ['Home', 'General', 'Social', 'Incidents'];
 
 export const RoomsList = props => {
-  const { onRoomChange, currRoomId, author, rooms, setRooms } = props;
+  const { onRoomChange, currRoomId, author, rooms, setRooms, members } = props;
   //   const classes = useStyles();
   // const [currRoomId, setcurrRoomId] = React.useState("Home");
 
@@ -38,6 +38,7 @@ export const RoomsList = props => {
       currRoomId={currRoomId}
       onRoomChange={onRoomChange}
       author={author}
+      members={members}
       onRoomsPost={room => {
         console.log('setting rooms');
         setRooms([...rooms, room]);

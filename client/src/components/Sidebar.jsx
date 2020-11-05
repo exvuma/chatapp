@@ -36,7 +36,14 @@ const useStyles = makeStyles(theme => ({
 
 export const Sidebar = props => {
   const classes = useStyles();
-  const { rooms, currRoomId, onRoomChange, onRoomsPost, author } = props;
+  const {
+    rooms,
+    currRoomId,
+    onRoomChange,
+    onRoomsPost,
+    author,
+    members,
+  } = props;
 
   const unselectedRooms = rooms.filter(room => room.id !== currRoomId);
   const otherRooms = rooms.filter(room => room.id !== DEFAULT_ROOM_ID);
@@ -86,7 +93,7 @@ export const Sidebar = props => {
           </List>
         </React.Fragment>
       )}
-      <CreateRoom onRoomsPost={onRoomsPost} author={author} />
+      <CreateRoom onRoomsPost={onRoomsPost} author={author} members={members} />
     </div>
   );
 };

@@ -20,6 +20,8 @@ dotenv.config({ path: '../.env', debug: true });
 
 const ENDPOINT = process.env.REACT_APP_API_ENDPOINT || '/';
 const GET_ROOMS_ENDPOINT = ENDPOINT + '/rooms';
+const POST_NAME_ENDPOINT = ENDPOINT + '/names';
+
 const LOCAL_DEBUG = process.env.DEBUG || false; // TODO: remove true
 import { MOCK_ROOMS } from './mocks';
 
@@ -63,13 +65,63 @@ const SignInCard = props => {
   );
 };
 function App() {
-  const [isEditingName, setIsEditingName] = useState(false);
+  const [isEditingName, setIsEditingName] = useState(true);
   const [currRoomId, setcurrRoomId] = useState('home');
   const [name, setName] = useState('Name');
 
   const [rooms, setRooms] = useState(MOCK_ROOMS);
   const [currRoom, setCurrRoom] = useState(MOCK_ROOMS[0]);
+  const [members, setMembers] = useState(
+    rooms
+      .reduce((membsArr, room) => [...membsArr, ...room.members], [])
+      .reduce(
+        (membsArr, m1) =>
+          membsArr.includes(m1) ? membsArr : [...membsArr, m1],
+        []
+      )
+  );
   const [, setError] = useState('');
+
+  async function postName(name) {
+    return fetch(POST_NAME_ENDPOINT, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ name }),
+    })
+      .then(res => res.json())
+      .then(body => {
+        console.log('posted name', body);
+      })
+      .catch(error => {
+        console.error('Error: ', error);
+        if (error.name === 'TypeError') {
+          return setError(
+            'Failed to fetch at ' +
+              GET_ROOMS_ENDPOINT +
+              ' are you sure the server is running there? '
+          );
+        }
+        return setError(error.toString());
+      });
+  }
+  useEffect(() => {
+    if (!isEditingName) {
+      postName(name);
+    }
+  }, [isEditingName]);
+  useEffect(() => {
+    setMembers(
+      rooms
+        .reduce((membsArr, room) => [...membsArr, ...room.members], [])
+        .reduce(
+          (membsArr, m1) =>
+            membsArr.includes(m1) ? membsArr : [...membsArr, m1],
+          []
+        )
+    );
+  }, [rooms]);
   async function fetchRooms() {
     if (LOCAL_DEBUG) {
       return setRooms(MOCK_ROOMS);
@@ -93,16 +145,14 @@ function App() {
   }
   useEffect(() => {
     fetchRooms();
-    console.log('use effect room');
   }, []);
+
   useEffect(() => {
-    console.log('her', currRoomId);
-    console.log(rooms.find(room => room.id !== currRoomId));
     setCurrRoom(rooms.find(room => room.id == currRoomId) || MOCK_ROOMS[0]);
   }, [currRoomId, rooms]);
 
   return (
-    <div>
+    <React.Fragment>
       {isEditingName && (
         <SignInCard
           setName={setName}
@@ -111,40 +161,38 @@ function App() {
         />
       )}
       {!isEditingName && (
-        <div>
-          <Grid container spacing={0}>
-            <Grid item xs={3}>
-              <RoomsList
-                currRoomId={currRoomId}
-                onRoomChange={setcurrRoomId}
-                author={name}
-                rooms={rooms}
-                setRooms={setRooms}
-              ></RoomsList>
-            </Grid>
-            <Grid item xs={9}>
-              <AppBar position='static'>
-                <Toolbar>
-                  <IconButton
-                    edge='start'
-                    className={'classes.menuButton'}
-                    color='inherit'
-                    aria-label='menu'
-                  ></IconButton>
-                  <Typography variant='h6' noWrap>
-                    Hi, you're chatting as {name}
-                  </Typography>
-                </Toolbar>
-              </AppBar>
-              {/* <Typography paragraph>Lorem ipsum dolor sit amet</Typography> */}
-              <Box style={{ margin: '3rem' }}>
-                <Room room={currRoom} author={name} />
-              </Box>
-            </Grid>
+        <Grid container spacing={0}>
+          <Grid item xs={3}>
+            <RoomsList
+              currRoomId={currRoomId}
+              onRoomChange={setcurrRoomId}
+              author={name}
+              rooms={rooms}
+              setRooms={setRooms}
+              members={members}
+            ></RoomsList>
           </Grid>
-        </div>
+          <Grid item xs={9}>
+            <AppBar position='static'>
+              <Toolbar>
+                <IconButton
+                  edge='start'
+                  className={'classes.menuButton'}
+                  color='inherit'
+                  aria-label='menu'
+                ></IconButton>
+                <Typography variant='h6' noWrap>
+                  Hi, you're chatting as {name}
+                </Typography>
+              </Toolbar>
+            </AppBar>
+            <Box style={{ margin: '3rem' }}>
+              <Room room={currRoom} author={name} />
+            </Box>
+          </Grid>
+        </Grid>
       )}
-    </div>
+    </React.Fragment>
   );
 }
 
