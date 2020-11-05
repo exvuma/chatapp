@@ -2,6 +2,9 @@
   "name": "chatapp-server",
   "version": "1.0.0",
   "main": "api.js",
+  "engines": {
+    "node": ">=10.0.0"
+  },
   "license": "MIT",
   "dependencies": {
     "@material-ui/core": "^4.11.0",
