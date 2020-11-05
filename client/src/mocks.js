@@ -17,7 +17,7 @@ export const MOCK_ROOMS = [
     name: 'Room 2',
     id: 'room2',
     author: 'Victoria',
-    time: 1603741045962,
+    time: 1603741045963,
     members: ['Victoria', 'John'],
   },
 ];
@@ -26,7 +26,7 @@ export const MOCK_MSGS = [
   {
     message: "What's up",
     author: 'Victoria',
-    time: 1603741045962,
+    time: 1603741045963,
     roomId: 'room2',
   },
 ];

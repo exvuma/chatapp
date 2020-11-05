@@ -1,9 +1,7 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import Drawer from '@material-ui/core/Drawer';
 import List from '@material-ui/core/List';
 import Divider from '@material-ui/core/Divider';
-import { Box } from '@material-ui/core';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import { CreateRoom } from './CreateRoom';
@@ -35,7 +33,6 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export const Sidebar = props => {
-  const classes = useStyles();
   const {
     rooms,
     currRoomId,
@@ -45,10 +42,8 @@ export const Sidebar = props => {
     members,
   } = props;
 
-  const unselectedRooms = rooms.filter(room => room.id !== currRoomId);
   const otherRooms = rooms.filter(room => room.id !== DEFAULT_ROOM_ID);
   // const currRoom = rooms.filter(room => room.id == currRoomId);
-  const isSelected = currRoom => rooms.find(room => currRoom.id === room.id);
   console.log('rooms', rooms);
   return (
     <div
@@ -69,9 +64,13 @@ export const Sidebar = props => {
         <React.Fragment>
           <List>
             <ListItem
-              selected={currRoomId === DEFAULT_ROOM_ID}
               button
               key={DEFAULT_ROOM_ID}
+              selected={currRoomId === DEFAULT_ROOM_ID}
+              onClick={() => {
+                console.log('aer');
+                onRoomChange(DEFAULT_ROOM_ID);
+              }}
             >
               <ListItemText
                 primary={rooms.find(room => room.id === DEFAULT_ROOM_ID).name}
@@ -80,12 +79,12 @@ export const Sidebar = props => {
           </List>
           <Divider />
           <List>
-            {otherRooms.map((room, index) => (
+            {otherRooms.map(room => (
               <ListItem
                 button
                 key={room.id}
                 selected={currRoomId === room.id}
-                onClick={e => onRoomChange(room.id)}
+                onClick={() => onRoomChange(room.id)}
               >
                 <ListItemText primary={room.name} />
               </ListItem>

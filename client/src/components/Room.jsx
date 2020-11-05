@@ -14,7 +14,7 @@ const socket = socketIOClient(API_HOST);
 
 export const Room = props => {
   const { room } = props;
-  const { id, name, author } = room;
+  const { id, name, author, members } = room;
   const roomId = id;
   const [msgs, setMsgs] = useState([]);
   const [inputValue, setInputValue] = useState('');
@@ -76,6 +76,10 @@ export const Room = props => {
   return (
     <Box marginTop={3}>
       {!!error.length && <Box>There were errors {error}</Box>}
+      Members is this room:{' '}
+      {members.map(mem => (
+        <Link key={mem}> {mem} </Link>
+      ))}
       {myMsgs.map(msg => (
         <Box display='flex' p={1} key={msg.time} marginTop={3}>
           <Box textAlign='left' alignSelf='flex-start' flexGrow={1}>

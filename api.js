@@ -44,7 +44,7 @@ const MOCK_ROOMS = [
     id: 'home',
     author: 'Home',
     time: 1603741045962,
-    members: [],
+    members: ['Victoria', 'John'],
   },
 ];
 const MOCK_MSGS = [
@@ -54,13 +54,10 @@ const MOCK_MSGS = [
     time: 1603741045962,
     roomId: 'home',
   },
-  { message: 'Hi there', author: 'John', time: 1603741045962, roomId: 'room1' },
-  { message: 'Hi there', author: 'John', time: 1603741045962, roomId: 'room1' },
-  { message: 'Hi there', author: 'John', time: 1603741045962, roomId: 'room1' },
   {
     message: "What's up",
     author: 'Victoria',
-    time: 1603741045962,
+    time: 1603741045963,
     roomId: 'room2',
   },
 ];
@@ -84,7 +81,9 @@ const appendUsers = name => {
   rooms = rooms.map(room =>
     room.id === 'home' ? { ...room, members: [...room.members, name] } : room
   );
-  return rooms;
+  let homeRoom = rooms.find(room => room.id === 'home');
+
+  return homeRoom.members;
 };
 
 app.get('/*.html', (req, res) => {
