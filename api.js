@@ -67,12 +67,10 @@ var rooms = MOCK_ROOMS; //['string'];
 app.use(cors());
 
 const appendMsgs = msg => {
-  console.log('append', msg.message);
   messages = [...messages, msg];
   return messages;
 };
 const appendRooms = room => {
-  console.log('append', room);
   //TODO validate room type
 
   rooms = [...rooms, room];
@@ -113,7 +111,6 @@ app.get('/api/messages', (req, res) => {
   res.send(JSON.stringify(messages), 200);
 });
 app.post('/api/rooms', (req, res) => {
-  console.log('posted room, ', req.body);
   // io.emit("FromAPI", 22);
   io.emit('POST_ROOM', JSON.stringify(req.body));
   rooms = appendRooms(req.body);
