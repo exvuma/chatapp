@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import socketIOClient from 'socket.io-client';
-import { CreateRoom } from './CreateRoom';
+import { CreateRoomPopover } from './CreateRoom';
 import { Sidebar } from './Sidebar';
 const dotenv = require('dotenv');
 dotenv.config({ path: '../.env', debug: true });
@@ -39,8 +39,7 @@ export const RoomsList = props => {
       onRoomChange={onRoomChange}
       author={author}
       members={members}
-      onRoomsPost={room => {
-        console.log('setting rooms');
+      setRooms={room => {
         setRooms([...rooms, room]);
       }}
     ></Sidebar>

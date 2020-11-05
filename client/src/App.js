@@ -9,7 +9,6 @@ import {
   IconButton,
   Button,
   Grid,
-  Container,
 } from '@material-ui/core';
 import 'fontsource-roboto';
 import { Room } from './components/Room';
@@ -65,9 +64,9 @@ const SignInCard = props => {
   );
 };
 function App() {
-  const [isEditingName, setIsEditingName] = useState(true);
+  const [isEditingName, setIsEditingName] = useState(false);
   const [currRoomId, setcurrRoomId] = useState('home');
-  const [name, setName] = useState('');
+  const [name, setName] = useState('Vic');
 
   const [rooms, setRooms] = useState(MOCK_ROOMS);
   const [currRoom, setCurrRoom] = useState(MOCK_ROOMS[0]);
@@ -76,10 +75,7 @@ function App() {
       ? []
       : roomsArr
           .reduce((membsArr, room) => {
-            console.log(membsArr);
-            console.log(room.members);
-            console.log(room);
-            return [...membsArr, ...room.members];
+            return room.members ? [...membsArr, ...room.members] : membsArr;
           }, [])
           .reduce(
             (membsArr, m1) =>

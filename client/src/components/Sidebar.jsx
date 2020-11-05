@@ -4,7 +4,7 @@ import List from '@material-ui/core/List';
 import Divider from '@material-ui/core/Divider';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
-import { CreateRoom } from './CreateRoom';
+import { CreateRoomPopover } from './CreateRoom';
 const DEFAULT_ROOM_ID = 'home';
 const drawerWidth = 240;
 
@@ -33,18 +33,10 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export const Sidebar = props => {
-  const {
-    rooms,
-    currRoomId,
-    onRoomChange,
-    onRoomsPost,
-    author,
-    members,
-  } = props;
+  const { rooms, currRoomId, onRoomChange, setRooms, author, members } = props;
 
   const otherRooms = rooms.filter(room => room.id !== DEFAULT_ROOM_ID);
   // const currRoom = rooms.filter(room => room.id == currRoomId);
-  console.log('rooms', rooms);
   return (
     <div
       // display='flex'
@@ -92,7 +84,11 @@ export const Sidebar = props => {
           </List>
         </React.Fragment>
       )}
-      <CreateRoom onRoomsPost={onRoomsPost} author={author} members={members} />
+      <CreateRoomPopover
+        setRooms={setRooms}
+        author={author}
+        members={members}
+      />
     </div>
   );
 };

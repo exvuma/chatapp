@@ -11,24 +11,24 @@ const dotenv = require('dotenv');
 dotenv.config({ path: '../.env', debug: true });
 
 export const SelectNames = props => {
-  const { names, setSelectedNames } = props;
+  const { names, setSelectedNames, openNameSelect } = props;
   const [personName, setPersonName] = React.useState([]);
 
   const handleChange = event => {
     setPersonName(event.target.value);
-    console.log(event.target.value);
     setSelectedNames(event.target.value);
   };
 
   return (
     <React.Fragment>
-      <InputLabel id='demo-mutiple-checkbox-label'>Select Members</InputLabel>
+      <InputLabel id='mutiple-checkbox-label'>Select Members</InputLabel>
       <Select
-        labelId='demo-mutiple-checkbox-label'
-        id='demo-mutiple-checkbox'
+        labelId='mutiple-checkbox-label'
+        id='mutiple-checkbox'
         multiple
         value={personName}
         onChange={handleChange}
+        onClose={e => console.log(e)}
         input={<Input />}
         renderValue={selected => selected.join(', ')}
         // MenuProps={MenuProps}
