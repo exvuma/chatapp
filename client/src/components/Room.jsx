@@ -21,7 +21,6 @@ export const Room = props => {
   const [error, setError] = useState('');
   const myMsgs = msgs.filter(msg => msg.roomId === id);
   async function fetchMsgs() {
-    console.log('GET_MSGS_ENDPOINT(roomId)', GET_MSGS_ENDPOINT(roomId));
     if (LOCAL_DEBUG) {
       return setMsgs(MOCK_MSGS);
     }
@@ -86,7 +85,6 @@ export const Room = props => {
             {msg.message}
           </Box>
           <Link> {msg.author}</Link>
-          <Link> {name}</Link>
         </Box>
       ))}
       <Box
@@ -106,6 +104,7 @@ export const Room = props => {
             alignItems: 'center',
             justifyContent: 'center',
             display: 'flex',
+            marginRight: '3rem',
           }}
         >
           <TextField
@@ -120,7 +119,7 @@ export const Room = props => {
               flex: 1,
             }}
           >
-            <img src={sendImg} alt={'Send'} style={{ width: '5%' }} />
+            <img src={sendImg} alt={'Send'} style={{ width: '15%' }} />
           </Button>
         </form>
       </Box>
