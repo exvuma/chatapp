@@ -29,7 +29,7 @@
   },
   "scripts": {
     "start": "API_PORT=3001 node api.js",
-    "heroku-postbuild": "cd ./client && yarn && yarn run build",
+    "heroku-postbuild": "yarn run build:client",
     "start:client": "cd ./client && react-scripts start",
     "start:server": "node api.js",
     "env": "API_HOST=localhost:3001 REACT_APP_API_ENDPOINT=http://localhost:3001/api",
