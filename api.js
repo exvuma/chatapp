@@ -5,14 +5,9 @@ var app = express();
 const bodyParser = require('body-parser');
 // const serverless = require("serverless-http");
 var cors = require('cors');
-const dotenv = require('dotenv');
-dotenv.config();
+//
 const APP_NAME = process.env.REACT_APP_APP_NAME || 'Chat App';
-// import { MOCK_ROOMS } from './mocks';
 
-// Route to Netlify for deploying
-// const router = express.Router();
-// router.post("/", (req, res) => res.json({ postBody: req.body }));
 app.use(bodyParser.json());
 // app.use("/server/functions", router); // path must route to lambda
 

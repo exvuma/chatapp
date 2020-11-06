@@ -3,8 +3,6 @@ import { Box, Link, TextField, Grid, Paper, Button } from '@material-ui/core';
 import sendImg from './send.png';
 import socketIOClient from 'socket.io-client';
 import { MOCK_MSGS } from '../mocks';
-const dotenv = require('dotenv');
-dotenv.config({ path: '../.env', debug: true });
 
 const ENDPOINT = process.env.REACT_APP_API_ENDPOINT || '/';
 const API_HOST = process.env.REACT_APP_API_HOST || '/';

@@ -2,8 +2,6 @@ import React, { useState, useEffect } from 'react';
 import socketIOClient from 'socket.io-client';
 import { CreateRoomPopover } from './CreateRoom';
 import { Sidebar } from './Sidebar';
-const dotenv = require('dotenv');
-dotenv.config({ path: '../.env', debug: true });
 
 const ENDPOINT = process.env.REACT_APP_API_ENDPOINT || '/';
 const API_HOST = process.env.REACT_APP_API_HOST || '/';

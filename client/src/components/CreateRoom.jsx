@@ -20,15 +20,12 @@ import { SelectNames } from './SelectNames';
 import sendImg from './send.png';
 import plusImg from '../static/plus.png';
 import socketIOClient from 'socket.io-client';
-const dotenv = require('dotenv');
-dotenv.config({ path: '../.env', debug: true });
 
 const ENDPOINT = process.env.REACT_APP_API_ENDPOINT || '/';
-const API_HOST = process.env.REACT_APP_API_HOST || '/';
 const POST_ROOM_ENDPOINT = ENDPOINT + '/rooms';
 const LOCAL_DEBUG = process.env.DEBUG || false; // TODO: remove true
 
-const socket = socketIOClient(API_HOST);
+const socket = socketIOClient(ENDPOINT);
 const ERRORS = {
   'no-room-name': { text: 'Please submit a room name', id: 'no-room-name' },
   'no-members': {

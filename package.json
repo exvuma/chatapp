@@ -16,7 +16,6 @@
     "body-parser": "^1.19.0",
     "connect": "^3.7.0",
     "cors": "^2.8.5",
-    "dotenv": "^8.2.0",
     "express": "4.15.2",
     "fontsource-roboto": "^3.0.3",
     "react": "^17.0.1",
@@ -29,13 +28,14 @@
     "uuid": "^8.3.1"
   },
   "scripts": {
-    "start": "node api.js",
+    "start": "API_PORT=3001 node api.js",
     "heroku-postbuild": "cd ./client && yarn && yarn run build",
     "start:client": "cd ./client && react-scripts start",
     "start:server": "node api.js",
-    "build:client": "cd ./client && react-scripts build",
-    "test:client": "cd ./client && react-scripts test --env=jsdom",
-    "eject:client": "cd ./client && react-scripts eject"
+    "env": "API_HOST=localhost:3001 REACT_APP_API_ENDPOINT=http://localhost:3001/api",
+    "build:client": "API_HOST=localhost:3001 REACT_APP_API_ENDPOINT=http://localhost:3001/api && cd ./client && react-scripts build",
+    "test:client": "API_HOST=localhost:3001 REACT_APP_API_ENDPOINT=http://localhost:3001/api && cd ./client && react-scripts test --env=jsdom",
+    "eject:client": "API_HOST=localhost:3001 REACT_APP_API_ENDPOINT=http://localhost:3001/api && cd ./client && react-scripts eject"
   },
   "devDependencies": {
     "eslint": "^7.12.1",

@@ -14,8 +14,6 @@ import 'fontsource-roboto';
 import { Room } from './components/Room';
 import { RoomsList } from './components/RoomsList';
 import React, { useState, useEffect } from 'react';
-const dotenv = require('dotenv');
-dotenv.config({ path: '../.env', debug: true });
 
 const ENDPOINT = process.env.REACT_APP_API_ENDPOINT || '/';
 const GET_ROOMS_ENDPOINT = ENDPOINT + '/rooms';

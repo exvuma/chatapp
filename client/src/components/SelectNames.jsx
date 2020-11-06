@@ -7,8 +7,6 @@ import {
   MenuItem,
   Input,
 } from '@material-ui/core';
-const dotenv = require('dotenv');
-dotenv.config({ path: '../.env', debug: true });
 
 export const SelectNames = props => {
   const { names, setSelectedNames, openNameSelect } = props;
