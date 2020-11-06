@@ -62,9 +62,9 @@ const SignInCard = props => {
   );
 };
 function App() {
-  const [isEditingName, setIsEditingName] = useState(false);
+  const [isEditingName, setIsEditingName] = useState(true);
   const [currRoomId, setcurrRoomId] = useState('home');
-  const [name, setName] = useState('Vic');
+  const [name, setName] = useState('');
 
   const [rooms, setRooms] = useState(MOCK_ROOMS);
   const [currRoom, setCurrRoom] = useState(MOCK_ROOMS[0]);
