@@ -12,7 +12,7 @@ import {
 } from '@material-ui/core';
 import 'fontsource-roboto';
 import { Room } from './components/Room';
-import { RoomsList } from './components/RoomsList';
+import { Sidebar } from './components/Sidebar';
 import React, { useState, useEffect } from 'react';
 
 const ENDPOINT = process.env.REACT_APP_API_ENDPOINT || '/';
@@ -68,6 +68,7 @@ function App() {
 
   const [rooms, setRooms] = useState(MOCK_ROOMS);
   const [currRoom, setCurrRoom] = useState(MOCK_ROOMS[0]);
+  // get all the members from the rooms and remove duplicates
   const roomsToMembs = roomsArr => {
     return !roomsArr
       ? []
@@ -157,14 +158,16 @@ function App() {
       {!isEditingName && (
         <Grid container spacing={0}>
           <Grid item xs={3}>
-            <RoomsList
+            <Sidebar
+              rooms={rooms}
+              author={name}
               currRoomId={currRoomId}
               onRoomChange={setcurrRoomId}
-              author={name}
-              rooms={rooms}
-              setRooms={setRooms}
               members={members}
-            ></RoomsList>
+              setRooms={room => {
+                setRooms([...rooms, room]);
+              }}
+            ></Sidebar>
           </Grid>
           <Grid item xs={9}>
             <AppBar position='static'>

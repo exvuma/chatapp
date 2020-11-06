@@ -35,23 +35,18 @@ const useStyles = makeStyles(theme => ({
 export const Sidebar = props => {
   const { rooms, currRoomId, onRoomChange, setRooms, author, members } = props;
 
-  const otherRooms = rooms.filter(room => room.id !== DEFAULT_ROOM_ID);
-  // const currRoom = rooms.filter(room => room.id == currRoomId);
+  const otherRooms = rooms.filter(
+    room => room.id !== DEFAULT_ROOM_ID && room.members.includes(author)
+  );
   return (
     <div
-      // display='flex'
       style={{
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'space-between',
         flex: 1,
       }}
-      // display='flex'
-      // flexDirection='column'
-      // justifyContent='spaceBetween'
-      // flex='1'
     >
-      {/* <div className={classes.toolbar} /> */}
       {!!rooms && (
         <React.Fragment>
           <List>

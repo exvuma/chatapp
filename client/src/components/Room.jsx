@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Box, Link, TextField, Grid, Paper, Button } from '@material-ui/core';
+import { Box, Link, TextField, Button } from '@material-ui/core';
 import sendImg from './send.png';
 import socketIOClient from 'socket.io-client';
 import { MOCK_MSGS } from '../mocks';
@@ -12,12 +12,12 @@ const socket = socketIOClient(API_HOST);
 
 export const Room = props => {
   const { room } = props;
-  const { id, name, author, members } = room;
+  const { id, author, members } = room;
   const roomId = id;
   const [msgs, setMsgs] = useState([]);
   const [inputValue, setInputValue] = useState('');
   const [error, setError] = useState('');
-  const myMsgs = msgs.filter(msg => msg.roomId === id);
+  const roomMsgs = msgs.filter(msg => msg.roomId === id);
   async function fetchMsgs() {
     if (LOCAL_DEBUG) {
       return setMsgs(MOCK_MSGS);
@@ -77,7 +77,7 @@ export const Room = props => {
       {members.map(mem => (
         <Link key={mem}> {mem} </Link>
       ))}
-      {myMsgs.map(msg => (
+      {roomMsgs.map(msg => (
         <Box display='flex' p={1} key={msg.time} marginTop={3}>
           <Box textAlign='left' alignSelf='flex-start' flexGrow={1}>
             {msg.message}
