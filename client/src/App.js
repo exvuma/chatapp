@@ -23,7 +23,7 @@ const LOCAL_DEBUG = process.env.DEBUG || false; // TODO: remove true
 import { MOCK_ROOMS } from './mocks';
 
 const SignInCard = props => {
-  const { setIsEditingName, name, setName } = props;
+  const { setIsEditingName, name, setName, fetchRooms } = props;
   return (
     <Box className='App-intro'>
       <AppBar className='makeStyles-appBar-2'>
@@ -45,6 +45,7 @@ const SignInCard = props => {
           onSubmit={e => {
             e.preventDefault();
             setIsEditingName(false);
+            fetchRooms();
           }}
           noValidate
           autoComplete='off'
@@ -65,6 +66,8 @@ function App() {
   const [isEditingName, setIsEditingName] = useState(true);
   const [currRoomId, setcurrRoomId] = useState('home');
   const [name, setName] = useState('');
+  const [members, setMembers] = useState([]);
+  const [, setError] = useState('');
 
   const [rooms, setRooms] = useState(MOCK_ROOMS);
   const [currRoom, setCurrRoom] = useState(MOCK_ROOMS[0]);
@@ -82,8 +85,6 @@ function App() {
             []
           );
   };
-  const [members, setMembers] = useState([]);
-  const [, setError] = useState('');
 
   async function postName(name) {
     return fetch(POST_NAME_ENDPOINT, {
@@ -109,14 +110,16 @@ function App() {
         return setError(error.toString());
       });
   }
-  useEffect(() => {
+  useEffect(async () => {
     if (!isEditingName) {
-      postName(name);
+      await postName(name);
+      await fetchRooms();
     }
   }, [isEditingName]);
   useEffect(() => {
     setMembers(roomsToMembs(rooms));
   }, [rooms]);
+
   async function fetchRooms() {
     if (LOCAL_DEBUG) {
       return setRooms(MOCK_ROOMS);
@@ -138,9 +141,6 @@ function App() {
         return setError(error.toString());
       });
   }
-  useEffect(() => {
-    fetchRooms();
-  }, []);
 
   useEffect(() => {
     setCurrRoom(rooms.find(room => room.id == currRoomId) || MOCK_ROOMS[0]);
@@ -152,6 +152,7 @@ function App() {
         <SignInCard
           setName={setName}
           setIsEditingName={setIsEditingName}
+          fetchRooms={fetchRooms}
           name={name}
         />
       )}

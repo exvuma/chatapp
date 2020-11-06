@@ -9,8 +9,8 @@ import {
 } from '@material-ui/core';
 
 export const SelectNames = props => {
-  const { names, setSelectedNames, openNameSelect } = props;
-  const [personName, setPersonName] = React.useState([]);
+  const { members, setSelectedNames, openNameSelect, author } = props;
+  const [personName, setPersonName] = React.useState([author]);
 
   const handleChange = event => {
     setPersonName(event.target.value);
@@ -29,9 +29,8 @@ export const SelectNames = props => {
         onClose={e => console.log(e)}
         input={<Input />}
         renderValue={selected => selected.join(', ')}
-        // MenuProps={MenuProps}
       >
-        {names.map(name => (
+        {members.map(name => (
           <MenuItem key={name} value={name}>
             <Checkbox checked={personName.indexOf(name) > -1} />
             <ListItemText primary={name} />

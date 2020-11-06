@@ -104,7 +104,7 @@ const CreateRoomForm = props => {
   } = props;
   const [roomName, setRoomName] = useState('');
   const [fetchError, setFetchError] = useState('');
-  const [selectedNames, setSelectedNames] = useState([]);
+  const [selectedNames, setSelectedNames] = useState([author]);
 
   async function postRoom(data) {
     return fetch(POST_ROOM_ENDPOINT, {
@@ -213,7 +213,8 @@ const CreateRoomForm = props => {
           style={{ flex: 1, marginBottom: '1rem' }}
         />
         <SelectNames
-          names={members}
+          members={members}
+          author={author}
           selectedNames={selectedNames}
           setSelectedNames={setSelectedNames}
           style={{ flex: 1, marginTop: '1rem' }}
