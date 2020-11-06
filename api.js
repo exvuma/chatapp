@@ -7,6 +7,7 @@ const bodyParser = require('body-parser');
 var cors = require('cors');
 //
 const APP_NAME = process.env.REACT_APP_APP_NAME || 'Chat App';
+const PORT = process.env.PORT || 3001;
 
 app.use(bodyParser.json());
 // app.use("/server/functions", router); // path must route to lambda
@@ -141,6 +142,6 @@ io.on('connection', socket => {
   });
 });
 // module.exports.handler = serverless(app);
-http.listen(process.env.API_PORT, () => {
-  console.log('listening on *:' + process.env.API_PORT);
+http.listen(PORT, () => {
+  console.log('listening on *:' + PORT);
 });
