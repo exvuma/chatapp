@@ -14,7 +14,7 @@ import socketIOClient from 'socket.io-client';
 const ENDPOINT = process.env.REACT_APP_API_ENDPOINT || '/';
 const API_HOST = process.env.REACT_APP_API_HOST || '/';
 const socket = socketIOClient(API_HOST);
-
+export const CreateMsgFormHeight = '100';
 export const CreateMsgForm = props => {
   const { room, author } = props;
   const { id } = room;

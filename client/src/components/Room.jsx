@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import {
   Card,
   Box,
@@ -73,13 +73,7 @@ export const Room = props => {
   const scrollToBottom = () => {
     console.log(buttomMsgRef);
     if (buttomMsgRef.current) {
-      buttomMsgRef.current.scrollIntoView(true);
-      // buttomMsgRef.current.scrollIntoView({
-      //   behavior: 'smooth',
-      //   block: 'end',
-      //   inline: 'nearest',
-      //   alignToTop: true,
-      // });
+      buttomMsgRef.current.scrollIntoView(false);
     }
   };
   return (
@@ -89,8 +83,6 @@ export const Room = props => {
         background: '#f5f5f5',
         overflowY: 'auto',
         height: '100%',
-        scrollSnapType: ' y proximity',
-        overscrollBehaviorY: ' contain',
       }}
     >
       {!!error.length && <Box>There were errors {error}</Box>}
@@ -99,16 +91,16 @@ export const Room = props => {
         <Link key={mem}> {mem} </Link>
       ))}
       <Box>
-        {roomMsgs.map((msg, i) =>
-          // To use ref must not be functional component
-          i === roomMsgs.length - 1 ? (
+        {roomMsgs.map((msg, i) => {
+          // To use ref must not be functional component,so use div
+          return i !== roomMsgs.length - 1 ? (
             <Message msg={msg} />
           ) : (
-            <div ref={buttomMsgRef}>
+            <div ref={buttomMsgRef} id={i + '-blah'}>
               <Message msg={msg} />
             </div>
-          )
-        )}
+          );
+        })}
       </Box>
     </Box>
   );
@@ -128,7 +120,6 @@ const Message = props => {
     >
       <Typography
         style={{ alignSelf: 'flex-end' }}
-        // className={classes.title}
         color='textSecondary'
         gutterBottom
       >

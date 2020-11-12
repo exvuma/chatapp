@@ -14,7 +14,7 @@ import 'fontsource-roboto';
 import { Room } from './components/Room';
 import { SignInCard } from './components/SignInCard';
 import { Sidebar } from './components/Sidebar';
-import { CreateMsgForm } from './components/CreateMsgForm';
+import { CreateMsgForm, CreateMsgFormHeight } from './components/CreateMsgForm';
 
 import React, { useState, useEffect } from 'react';
 
@@ -125,8 +125,21 @@ function App() {
       )}
       {!isEditingName && (
         <div style={{ display: 'flex', flexDirection: 'column' }}>
-          <Grid container spacing={0} style={{ flex: 1 }}>
-            <Grid item xs={3} style={{ height: '100vh', overflowY: 'scroll' }}>
+          <Grid
+            container
+            spacing={0}
+            style={{
+              flex: 1,
+            }}
+          >
+            <Grid
+              item
+              xs={3}
+              style={{
+                overflowY: 'scroll',
+                height: `calc(100vh - ${CreateMsgFormHeight}px)`,
+              }}
+            >
               <Sidebar
                 rooms={rooms}
                 author={name}
@@ -144,7 +157,7 @@ function App() {
               style={{
                 background: '#f5f5f5',
                 overflow: 'scroll',
-                height: '100vh',
+                height: `calc(100vh - ${CreateMsgFormHeight}px)`,
               }}
             >
               <AppBar position='static' style={{ boxShadow: 'none' }}>
@@ -165,7 +178,7 @@ function App() {
               </Box>
             </Grid>
           </Grid>
-          <div style={{ height: '100px' }}>
+          <div style={{ height: `${CreateMsgFormHeight}px` }}>
             <CreateMsgForm room={currRoom} author={name} />
           </div>
         </div>
