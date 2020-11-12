@@ -1,8 +1,17 @@
-import React, { useState, useEffect } from 'react';
-import { Box, Link, TextField, Button } from '@material-ui/core';
+import React, { useState, useEffect, useRef } from 'react';
+import {
+  Card,
+  Box,
+  Link,
+  TextField,
+  Typography,
+  Button,
+} from '@material-ui/core';
 import sendImg from './send.png';
 import socketIOClient from 'socket.io-client';
 import { MOCK_MSGS } from '../mocks';
+import { CreateMsgForm } from './CreateMsgForm';
+import { SelectNames } from './SelectNames';
 
 const ENDPOINT = process.env.REACT_APP_API_ENDPOINT || '/';
 const API_HOST = process.env.REACT_APP_API_HOST || '/';
@@ -11,12 +20,14 @@ const LOCAL_DEBUG = process.env.DEBUG || false; // TODO: remove true
 const socket = socketIOClient(API_HOST);
 
 export const Room = props => {
-  const { room } = props;
-  const { id, author, members } = room;
+  const { room, author } = props;
+  const { id, members } = room;
+  const roomAuthor = room.author;
   const roomId = id;
   const [msgs, setMsgs] = useState([]);
   const [inputValue, setInputValue] = useState('');
   const [error, setError] = useState('');
+  const buttomMsgRef = useRef(null);
   const roomMsgs = msgs.filter(msg => msg.roomId === id);
   async function fetchMsgs() {
     if (LOCAL_DEBUG) {
@@ -55,72 +66,80 @@ export const Room = props => {
   useEffect(() => {
     fetchMsgs();
   }, [roomId]);
+  useEffect(() => {
+    scrollToBottom();
+  }, [roomMsgs]);
 
-  const appendMsg = event => {
-    event.preventDefault();
-    const time = Date.now();
-    socket.emit('NewMessage', {
-      message: inputValue,
-      author: author,
-      time,
-      roomId: id,
-    });
-    setInputValue('');
-  };
-  const handleInputMsgChange = event => {
-    setInputValue(event.target.value);
+  const scrollToBottom = () => {
+    console.log(buttomMsgRef);
+    if (buttomMsgRef.current) {
+      buttomMsgRef.current.scrollIntoView(true);
+      // buttomMsgRef.current.scrollIntoView({
+      //   behavior: 'smooth',
+      //   block: 'end',
+      //   inline: 'nearest',
+      //   alignToTop: true,
+      // });
+    }
   };
   return (
-    <Box marginTop={3}>
+    <Box
+      marginTop={3}
+      style={{
+        background: '#f5f5f5',
+        overflowY: 'auto',
+        height: '100%',
+        scrollSnapType: ' y proximity',
+        overscrollBehaviorY: ' contain',
+      }}
+    >
       {!!error.length && <Box>There were errors {error}</Box>}
       Members is this room:{' '}
       {members.map(mem => (
         <Link key={mem}> {mem} </Link>
       ))}
-      {roomMsgs.map(msg => (
-        <Box display='flex' p={1} key={msg.time} marginTop={3}>
-          <Box textAlign='left' alignSelf='flex-start' flexGrow={1}>
-            {msg.message}
-          </Box>
-          <Link> {msg.author}</Link>
-        </Box>
-      ))}
-      <Box
-        style={{
-          bottom: 0,
-          width: '80%',
-          position: 'fixed',
-          display: 'flex',
-          margin: '2rem',
-        }}
-      >
-        <form
-          onSubmit={appendMsg}
-          noValidate
-          autoComplete='off'
-          style={{
-            alignItems: 'center',
-            justifyContent: 'center',
-            display: 'flex',
-            marginRight: '3rem',
-          }}
-        >
-          <TextField
-            label={'Message here'}
-            id='standard-basic'
-            value={inputValue}
-            onChange={handleInputMsgChange}
-            style={{ flex: 2 }}
-          />
-          <Button
-            style={{
-              flex: 1,
-            }}
-          >
-            <img src={sendImg} alt={'Send'} style={{ width: '15%' }} />
-          </Button>
-        </form>
+      <Box>
+        {roomMsgs.map((msg, i) =>
+          // To use ref must not be functional component
+          i === roomMsgs.length - 1 ? (
+            <Message msg={msg} />
+          ) : (
+            <div ref={buttomMsgRef}>
+              <Message msg={msg} />
+            </div>
+          )
+        )}
       </Box>
     </Box>
+  );
+};
+const Message = props => {
+  const { msg } = props;
+  const { author, message, time } = msg;
+  const prettyTime = new Date(time).toUTCString().replace('GMT', '');
+  return (
+    <Card
+      style={{
+        margin: '1em',
+        padding: '1em',
+        display: 'flex',
+        flexDirection: 'column',
+      }}
+    >
+      <Typography
+        style={{ alignSelf: 'flex-end' }}
+        // className={classes.title}
+        color='textSecondary'
+        gutterBottom
+      >
+        {prettyTime}
+      </Typography>
+      <Box display='flex' p={1} key={time} marginTop={3}>
+        <Box textAlign='left' alignSelf='flex-start' flexGrow={1}>
+          {message}
+        </Box>
+        <Link style={{ float: 'right' }}> {author}</Link>
+      </Box>
+    </Card>
   );
 };

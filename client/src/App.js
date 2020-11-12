@@ -12,83 +12,25 @@ import {
 } from '@material-ui/core';
 import 'fontsource-roboto';
 import { Room } from './components/Room';
+import { SignInCard } from './components/SignInCard';
 import { Sidebar } from './components/Sidebar';
+import { CreateMsgForm } from './components/CreateMsgForm';
+
 import React, { useState, useEffect } from 'react';
 
 const ENDPOINT = process.env.REACT_APP_API_ENDPOINT || '/';
 const GET_ROOMS_ENDPOINT = ENDPOINT + '/rooms';
 const POST_NAME_ENDPOINT = ENDPOINT + '/names';
 
-const LOCAL_DEBUG = process.env.DEBUG || false; // TODO: remove true
+const LOCAL_DEBUG = process.env.DEBUG || true; // TODO: remove true
 import { MOCK_ROOMS } from './mocks';
 
-const SignInCard = props => {
-  const { setIsEditingName, name, setName, fetchRooms } = props;
-  return (
-    <Box
-      className='App-intro'
-      style={{
-        margin: '3rem',
-        alignItems: 'center',
-        justifyContent: 'center',
-        display: 'flex',
-        flexDirection: 'column',
-      }}
-    >
-      <Toolbar>
-        <Typography variant='h6' noWrap>
-          Welcome to Chat App
-        </Typography>
-      </Toolbar>
-      <Box
-        style={{
-          flex: 1,
-          margin: '3rem',
-          justifyContent: 'center',
-          display: 'flex',
-          flexDirection: 'column',
-        }}
-      >
-        <InputLabel>What's your name ?</InputLabel>
-        <form
-          onSubmit={e => {
-            e.preventDefault();
-            setIsEditingName(false);
-            fetchRooms();
-          }}
-          style={{
-            flex: 1,
-          }}
-          noValidate
-          autoComplete='off'
-        >
-          <TextField
-            style={{
-              flex: 1,
-            }}
-            label={'My Name'}
-            id='standard-basic'
-            value={name}
-            onChange={e => setName(e.target.value)}
-          />
-          <Button
-            color='primary'
-            style={{
-              flex: 1,
-              margin: '1rem',
-            }}
-          >
-            Submit
-          </Button>
-        </form>
-      </Box>
-    </Box>
-  );
-};
 function App() {
-  const [isEditingName, setIsEditingName] = useState(true);
+  const [isEditingName, setIsEditingName] = useState(
+    LOCAL_DEBUG ? false : true
+  );
   const [currRoomId, setcurrRoomId] = useState('home');
-  const [name, setName] = useState('');
+  const [name, setName] = useState(LOCAL_DEBUG ? 'Victoria' : '');
   const [members, setMembers] = useState([]);
   const [, setError] = useState('');
 
@@ -109,7 +51,7 @@ function App() {
           );
   };
 
-  async function postName(name) {
+  const postName = async name => {
     return fetch(POST_NAME_ENDPOINT, {
       method: 'POST',
       headers: {
@@ -132,11 +74,13 @@ function App() {
         }
         return setError(error.toString());
       });
-  }
+  };
   useEffect(async () => {
     if (!isEditingName) {
       await postName(name);
       await fetchRooms();
+      // otherwise defaults to home author set in mock
+      setCurrRoom({ ...currRoom, author: name });
     }
   }, [isEditingName]);
   useEffect(() => {
@@ -166,7 +110,7 @@ function App() {
   }
 
   useEffect(() => {
-    setCurrRoom(rooms.find(room => room.id == currRoomId) || MOCK_ROOMS[0]);
+    setCurrRoom(rooms.find(room => room.id == currRoomId));
   }, [currRoomId, rooms]);
 
   return (
@@ -180,38 +124,51 @@ function App() {
         />
       )}
       {!isEditingName && (
-        <Grid container spacing={0}>
-          <Grid item xs={3}>
-            <Sidebar
-              rooms={rooms}
-              author={name}
-              currRoomId={currRoomId}
-              onRoomChange={setcurrRoomId}
-              members={members}
-              setRooms={room => {
-                setRooms([...rooms, room]);
+        <div style={{ display: 'flex', flexDirection: 'column' }}>
+          <Grid container spacing={0} style={{ flex: 1 }}>
+            <Grid item xs={3} style={{ height: '100vh', overflowY: 'scroll' }}>
+              <Sidebar
+                rooms={rooms}
+                author={name}
+                currRoomId={currRoomId}
+                onRoomChange={setcurrRoomId}
+                members={members}
+                setRooms={room => {
+                  setRooms([...rooms, room]);
+                }}
+              ></Sidebar>
+            </Grid>
+            <Grid
+              item
+              xs={9}
+              style={{
+                background: '#f5f5f5',
+                overflow: 'scroll',
+                height: '100vh',
               }}
-            ></Sidebar>
+            >
+              <AppBar position='static' style={{ boxShadow: 'none' }}>
+                <Toolbar>
+                  <IconButton
+                    edge='start'
+                    className={'classes.menuButton'}
+                    color='inherit'
+                    aria-label='menu'
+                  ></IconButton>
+                  <Typography variant='h6' noWrap>
+                    Hi, you're chatting as {name}
+                  </Typography>
+                </Toolbar>
+              </AppBar>
+              <Box style={{ margin: '3rem', background: '#f5f5f5' }}>
+                <Room room={currRoom} author={name} />
+              </Box>
+            </Grid>
           </Grid>
-          <Grid item xs={9}>
-            <AppBar position='static'>
-              <Toolbar>
-                <IconButton
-                  edge='start'
-                  className={'classes.menuButton'}
-                  color='inherit'
-                  aria-label='menu'
-                ></IconButton>
-                <Typography variant='h6' noWrap>
-                  Hi, you're chatting as {name}
-                </Typography>
-              </Toolbar>
-            </AppBar>
-            <Box style={{ margin: '3rem' }}>
-              <Room room={currRoom} author={name} />
-            </Box>
-          </Grid>
-        </Grid>
+          <div style={{ height: '100px' }}>
+            <CreateMsgForm room={currRoom} author={name} />
+          </div>
+        </div>
       )}
     </React.Fragment>
   );

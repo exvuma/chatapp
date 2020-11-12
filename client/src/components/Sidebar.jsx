@@ -45,6 +45,8 @@ export const Sidebar = props => {
         flexDirection: 'column',
         justifyContent: 'space-between',
         flex: 1,
+        background: '#505364',
+        color: 'white',
       }}
     >
       {!!rooms && (
