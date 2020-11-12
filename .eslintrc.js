@@ -1,7 +1,6 @@
 module.exports = {
   env: {
     browser: true,
-    es2020: true,
     node: true,
     es6: true,
   },
@@ -9,10 +8,16 @@ module.exports = {
   parserOptions: {
     ecmaFeatures: {
       jsx: true,
+      experimentalObjectRestSpread: true,
     },
-    ecmaVersion: 2020,
+    ecmaVersion: 6,
     sourceType: 'module',
   },
   plugins: ['react'],
-  rules: {},
+  parser: 'babel-eslint',
+  rules: {
+    'no-console': 0,
+    'no-unused-vars': 0,
+    'react/prop-types': 0,
+  },
 };
