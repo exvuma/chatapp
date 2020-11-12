@@ -1,17 +1,18 @@
 {
   "name": "chatapp-server",
   "version": "1.0.0",
-  "main": "api.js",
   "engines": {
     "node": ">=10.0.0"
   },
   "license": "MIT",
   "dependencies": {
+    "@giphy/js-fetch-api": "^2.0.0-alpha.0",
+    "@giphy/react-components": "^2.0.0-alpha.0",
     "@material-ui/core": "^4.11.0",
     "@material-ui/icons": "^4.9.1",
     "@types/jest": "^26.0.15",
-    "@types/node": "^14.14.6",
-    "@types/react": "^16.9.55",
+    "@types/node": "^14.14.7",
+    "@types/react": "^16.9.56",
     "@types/react-dom": "^16.9.9",
     "body-parser": "^1.19.0",
     "connect": "^3.7.0",
@@ -20,30 +21,26 @@
     "fontsource-roboto": "^3.0.3",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
-    "react-scripts": "0.9.x",
-    "serverless-http": "^2.6.0",
+    "react-scripts": "^2.1.0",
     "socket.io": "^2.3.0",
     "socket.io-client": "^2.3.1",
-    "typescript": "^4.0.5",
-    "uuid": "^8.3.1"
+    "typescript": "^4.0.5"
   },
   "scripts": {
     "start": "API_PORT=3001 node api.js",
     "heroku-postbuild": "yarn run build:client",
-    "start:client": "cd ./client && react-scripts start",
-    "start:server": "node api.js",
+    "start:client": "react-scripts start",
+    "start:server": "node server/api.js",
     "env": "API_HOST=localhost:3001 REACT_APP_API_ENDPOINT=http://localhost:3001/api",
-    "build:client": "API_HOST=localhost:3001 REACT_APP_API_ENDPOINT=http://localhost:3001/api && cd ./client && react-scripts build",
-    "test:client": "API_HOST=localhost:3001 REACT_APP_API_ENDPOINT=http://localhost:3001/api && cd ./client && react-scripts test --env=jsdom",
-    "eject:client": "API_HOST=localhost:3001 REACT_APP_API_ENDPOINT=http://localhost:3001/api && cd ./client && react-scripts eject"
+    "build:client": "API_HOST=localhost:3001 REACT_APP_API_ENDPOINT=http://localhost:3001/api && react-scripts build",
+    "test:client": "API_HOST=localhost:3001 REACT_APP_API_ENDPOINT=http://localhost:3001/api && react-scripts test --env=jsdom",
+    "eject:client": "API_HOST=localhost:3001 REACT_APP_API_ENDPOINT=http://localhost:3001/api && react-scripts eject"
   },
-  "devDependencies": {
-    "eslint": "^7.12.1",
-    "eslint-config-standard": "^16.0.1",
-    "eslint-plugin-import": "^2.22.1",
-    "eslint-plugin-node": "^11.1.0",
-    "eslint-plugin-promise": "^4.2.1",
-    "eslint-plugin-react": "^7.21.5",
-    "eslint-plugin-standard": "^4.0.2"
-  }
+  "devDependencies": {},
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ]
 }

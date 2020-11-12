@@ -8,7 +8,9 @@ import {
   Input,
 } from '@material-ui/core';
 import { Box, TextField, Button } from '@material-ui/core';
-import sendImg from './send.png';
+import GifIcon from '@material-ui/icons/Gif';
+import * as sendImg from './send.png';
+// import { GiphySearch } from './Giphy';
 import socketIOClient from 'socket.io-client';
 
 const ENDPOINT = process.env.REACT_APP_API_ENDPOINT || '/';
@@ -73,6 +75,7 @@ export const CreateMsgForm = props => {
         >
           <img src={sendImg} alt={'Send'} style={{ width: '40px' }} />
         </Button>
+        <GifIcon />
       </form>
     </Box>
   );
