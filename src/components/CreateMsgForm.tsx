@@ -1,27 +1,24 @@
-import React, { useState } from 'react';
-import {
-  Select,
-  InputLabel,
-  Checkbox,
-  ListItemText,
-  MenuItem,
-  Input,
-} from '@material-ui/core';
+import React, { ChangeEvent, useState } from 'react';
 import { Box, TextField, Button } from '@material-ui/core';
-import GifIcon from '@material-ui/icons/Gif';
-import * as sendImg from './send.png';
-// import { GiphySearch } from './Giphy';
+import { Gif } from '@giphy/react-components';
+import SendIcon from '@material-ui/icons/Send';
+import { CreateGiphyPopover } from './Giphy';
 import socketIOClient from 'socket.io-client';
+import { RoomType } from '../types';
 
-const ENDPOINT = process.env.REACT_APP_API_ENDPOINT || '/';
 const API_HOST = process.env.REACT_APP_API_HOST || '/';
 const socket = socketIOClient(API_HOST);
 export const CreateMsgFormHeight = '100';
-export const CreateMsgForm = props => {
+
+type CreateMsgFormProps = {
+  room: RoomType;
+  author: string;
+};
+export const CreateMsgForm: React.FC<CreateMsgFormProps> = props => {
   const { room, author } = props;
-  const { id } = room;
   const [inputValue, setInputValue] = useState('');
-  const appendMsg = event => {
+  const [inputGif, setInputGif] = useState<IGif>(null);
+  const appendMsg = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const time = Date.now();
     socket.emit('NewMessage', {
@@ -32,7 +29,7 @@ export const CreateMsgForm = props => {
     });
     setInputValue('');
   };
-  const handleInputMsgChange = event => {
+  const handleInputMsgChange = (event: ChangeEvent) => {
     setInputValue(event.target.value);
   };
   return (
@@ -41,6 +38,7 @@ export const CreateMsgForm = props => {
         bottom: 0,
         position: 'fixed',
         display: 'flex',
+        flexDirection: 'column',
         width: '100%',
         background: 'white',
         padding: '.2rem .2rem .2rem 2rem',
@@ -66,17 +64,17 @@ export const CreateMsgForm = props => {
           onChange={handleInputMsgChange}
           style={{ flex: 2 }}
         />
+        {inputGif ? <Gif gif={inputGif} width={300} /> : ''}
         <Button
           style={{
-            // flex: 1,
             width: ' 80px',
             padding: ' 1.6rem',
           }}
         >
-          <img src={sendImg} alt={'Send'} style={{ width: '40px' }} />
+          <SendIcon style={{ width: '40px' }} />
         </Button>
-        <GifIcon />
       </form>
+      <CreateGiphyPopover setInputGif={setInputGif} />
     </Box>
   );
 };
