@@ -1,16 +1,13 @@
 import './App.css';
 import {
   Box,
-  InputLabel,
-  TextField,
   AppBar,
   Toolbar,
   Typography,
   IconButton,
-  Button,
   Grid,
 } from '@material-ui/core';
-// } from '@material-ui/core';
+import { RoomType } from './types';
 import 'fontsource-roboto';
 import { Room } from './components/Room';
 import { SignInCard } from './components/SignInCard';
@@ -32,27 +29,27 @@ function App() {
   );
   const [currRoomId, setcurrRoomId] = useState('home');
   const [name, setName] = useState(LOCAL_DEBUG ? 'Victoria' : '');
-  const [members, setMembers] = useState([]);
+  const [members, setMembers] = useState<RoomType['members']>([]);
   const [, setError] = useState('');
 
-  const [rooms, setRooms] = useState(MOCK_ROOMS);
-  const [currRoom, setCurrRoom] = useState(MOCK_ROOMS[0]);
+  const [rooms, setRooms] = useState<RoomType[]>(MOCK_ROOMS);
+  const [currRoom, setCurrRoom] = useState<RoomType>(MOCK_ROOMS[0]);
   // get all the members from the rooms and remove duplicates
-  const roomsToMembs = roomsArr => {
+  const roomsToMembs = (roomsArr?: RoomType[]) => {
     return !roomsArr
       ? []
       : roomsArr
           .reduce((membsArr, room) => {
             return room.members ? [...membsArr, ...room.members] : membsArr;
-          }, [])
+          }, [] as RoomType['members'])
           .reduce(
             (membsArr, m1) =>
               membsArr.includes(m1) ? membsArr : [...membsArr, m1],
-            []
+            [] as RoomType['members']
           );
   };
 
-  const postName = async name => {
+  const postName = async (name: string) => {
     return fetch(POST_NAME_ENDPOINT, {
       method: 'POST',
       headers: {
@@ -76,13 +73,15 @@ function App() {
         return setError(error.toString());
       });
   };
-  useEffect(async () => {
-    if (!isEditingName) {
-      await postName(name);
-      await fetchRooms();
-      // otherwise defaults to home author set in mock
-      setCurrRoom({ ...currRoom, author: name });
-    }
+  useEffect(() => {
+    (async () => {
+      if (!isEditingName) {
+        await postName(name);
+        await fetchRooms();
+        // otherwise defaults to home author set in mock
+        setCurrRoom({ ...currRoom, author: name });
+      }
+    })();
   }, [isEditingName]);
   useEffect(() => {
     setMembers(roomsToMembs(rooms));
@@ -111,7 +110,7 @@ function App() {
   }
 
   useEffect(() => {
-    setCurrRoom(rooms.find(room => room.id == currRoomId));
+    setCurrRoom(rooms.find(room => room.id === currRoomId) || currRoom);
   }, [currRoomId, rooms]);
 
   return (
@@ -147,7 +146,7 @@ function App() {
                 currRoomId={currRoomId}
                 onRoomChange={setcurrRoomId}
                 members={members}
-                setRooms={room => {
+                setRooms={(room: RoomType) => {
                   setRooms([...rooms, room]);
                 }}
               ></Sidebar>

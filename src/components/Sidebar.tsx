@@ -5,6 +5,7 @@ import Divider from '@material-ui/core/Divider';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import { CreateRoomPopover } from './CreateRoom';
+import { RoomType } from '../types';
 const DEFAULT_ROOM_ID = 'home';
 const drawerWidth = 240;
 
@@ -32,11 +33,11 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export const Sidebar = props => {
+export const Sidebar = (props: any) => {
   const { rooms, currRoomId, onRoomChange, setRooms, author, members } = props;
 
   const otherRooms = rooms.filter(
-    room => room.id !== DEFAULT_ROOM_ID && room.members.includes(author)
+    (room: any) => room.id !== DEFAULT_ROOM_ID && room.members.includes(author)
   );
   return (
     <div
@@ -62,13 +63,16 @@ export const Sidebar = props => {
               }}
             >
               <ListItemText
-                primary={rooms.find(room => room.id === DEFAULT_ROOM_ID).name}
+                primary={
+                  rooms.find((room: RoomType) => room.id === DEFAULT_ROOM_ID)
+                    .name
+                }
               />
             </ListItem>
           </List>
           <Divider />
           <List>
-            {otherRooms.map(room => (
+            {otherRooms.map((room: RoomType) => (
               <ListItem
                 button
                 key={room.id}

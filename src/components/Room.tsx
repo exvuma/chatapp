@@ -12,23 +12,25 @@ import socketIOClient from 'socket.io-client';
 import { MOCK_MSGS } from '../mocks';
 import { CreateMsgForm } from './CreateMsgForm';
 import { SelectNames } from './SelectNames';
+import { MsgType, RoomType } from '../types';
 
 const ENDPOINT = process.env.REACT_APP_API_ENDPOINT || '/';
 const API_HOST = process.env.REACT_APP_API_HOST || '/';
-const GET_MSGS_ENDPOINT = roomId => ENDPOINT + '/rooms/' + roomId + '/messages';
+const GET_MSGS_ENDPOINT = (roomId: string) =>
+  ENDPOINT + '/rooms/' + roomId + '/messages';
 const LOCAL_DEBUG = process.env.DEBUG || false; // TODO: remove true
 const socket = socketIOClient(API_HOST);
 
-export const Room = props => {
+export const Room = (props: any) => {
   const { room, author } = props;
   const { id, members } = room;
   const roomAuthor = room.author;
   const roomId = id;
-  const [msgs, setMsgs] = useState([]);
+  const [msgs, setMsgs] = useState<MsgType[]>([]);
   const [inputValue, setInputValue] = useState('');
   const [error, setError] = useState('');
   const buttomMsgRef = useRef(null);
-  const roomMsgs = msgs.filter(msg => msg.roomId === id);
+  const roomMsgs = msgs.filter((msg: MsgType) => msg.roomId === id);
   async function fetchMsgs() {
     if (LOCAL_DEBUG) {
       return setMsgs(MOCK_MSGS);
@@ -54,7 +56,7 @@ export const Room = props => {
       console.log(`I'm connected with the back-end`);
     });
 
-    socket.on('MsgCreated', data => {
+    socket.on('MsgCreated', (data: any) => {
       console.log('MsgCreated on client', data);
       setMsgs([...msgs, ...JSON.parse(data)]);
     });
@@ -72,7 +74,7 @@ export const Room = props => {
 
   const scrollToBottom = () => {
     console.log(buttomMsgRef);
-    if (buttomMsgRef.current) {
+    if (buttomMsgRef.current !== null) {
       buttomMsgRef.current.scrollIntoView(false);
     }
   };
@@ -87,7 +89,7 @@ export const Room = props => {
     >
       {!!error.length && <Box>There were errors {error}</Box>}
       Members is this room:{' '}
-      {members.map(mem => (
+      {members.map((mem: RoomType['members']) => (
         <Link key={mem}> {mem} </Link>
       ))}
       <Box>
@@ -105,7 +107,7 @@ export const Room = props => {
     </Box>
   );
 };
-const Message = props => {
+const Message = (props: any) => {
   const { msg } = props;
   const { author, message, time } = msg;
   const prettyTime = new Date(time).toUTCString().replace('GMT', '');

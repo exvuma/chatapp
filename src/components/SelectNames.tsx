@@ -7,14 +7,17 @@ import {
   MenuItem,
   Input,
 } from '@material-ui/core';
+import { RoomType } from '../types';
 
-export const SelectNames = props => {
+export const SelectNames = (props: any) => {
   const { members, setSelectedNames, openNameSelect, author } = props;
   const [personName, setPersonName] = React.useState([author]);
 
-  const handleChange = event => {
-    setPersonName(event.target.value);
-    setSelectedNames(event.target.value);
+  const handleChange = (event: Event) => {
+    if (event.target) {
+      setPersonName(event.target.value);
+      setSelectedNames(event.target.value);
+    }
   };
 
   return (
@@ -28,9 +31,9 @@ export const SelectNames = props => {
         onChange={handleChange}
         onClose={e => console.log(e)}
         input={<Input />}
-        renderValue={selected => selected.join(', ')}
+        renderValue={(selected: string[]) => selected.join(', ')}
       >
-        {members.map(name => (
+        {members.map((name: RoomType['members']) => (
           <MenuItem key={name} value={name}>
             <Checkbox checked={personName.indexOf(name) > -1} />
             <ListItemText primary={name} />

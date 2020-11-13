@@ -33,12 +33,12 @@ const ERRORS = {
     id: 'no-members',
   },
 };
-export const CreateRoomPopover = props => {
+export const CreateRoomPopover = (props: any) => {
   const { setRooms, author, members } = props;
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [merrors, setErrors] = React.useState([]);
   const [isPostingRoom, setIsPostingRoom] = useState(false);
-  const setForm = async arg => {
+  const setForm = async (arg: any) => {
     console.log(merrors);
     console.log('isPostingRoom', isPostingRoom);
     // if there aren't errors close the modal
@@ -49,7 +49,7 @@ export const CreateRoomPopover = props => {
     console.log(merrors);
   };
 
-  const handleClick = event => {
+  const handleClick = (event: Event) => {
     console.log('hanlding click');
     setAnchorEl(event.currentTarget);
   };
@@ -70,7 +70,7 @@ export const CreateRoomPopover = props => {
           setIsPostingRoom={setIsPostingRoom}
           author={author}
           members={members}
-          setErrors={e => {
+          setErrors={(e: any) => {
             console.log('setting errors', merrors, e);
             setErrors(e);
           }}
@@ -92,7 +92,7 @@ export const CreateRoomPopover = props => {
   );
 };
 
-const CreateRoomForm = props => {
+const CreateRoomForm = (props: any) => {
   const {
     author,
     members,
@@ -106,7 +106,7 @@ const CreateRoomForm = props => {
   const [fetchError, setFetchError] = useState('');
   const [selectedNames, setSelectedNames] = useState([author]);
 
-  async function postRoom(data) {
+  async function postRoom(data: any) {
     return fetch(POST_ROOM_ENDPOINT, {
       method: 'POST',
       headers: {
@@ -139,7 +139,7 @@ const CreateRoomForm = props => {
     setIsPostingRoom(false);
     setForm();
   };
-  const appendRoom = async event => {
+  const appendRoom = async (event: Event) => {
     event.preventDefault();
     setIsPostingRoom(true);
     //validate inputs
@@ -165,7 +165,7 @@ const CreateRoomForm = props => {
     await postRoom(roomData);
   };
 
-  const handleInputMsgChange = event => {
+  const handleInputMsgChange = (event: Event) => {
     setRoomName(event.target.value);
   };
 

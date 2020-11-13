@@ -1,4 +1,5 @@
-export const MOCK_ROOMS = [
+import { RoomType, MsgType } from './types';
+export const MOCK_ROOMS: RoomType[] = [
   {
     name: 'Home',
     id: 'home',

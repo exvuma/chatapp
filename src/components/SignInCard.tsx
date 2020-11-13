@@ -7,12 +7,17 @@ import {
   Button,
 } from '@material-ui/core';
 import 'fontsource-roboto';
-
 import React from 'react';
 
 const ENDPOINT = process.env.REACT_APP_API_ENDPOINT || '/';
+type SignInCardProps = {
+  setIsEditingName: (arg: boolean) => any;
+  name: string;
+  setName: (arg: string) => any;
+  fetchRooms: () => Promise<void>;
+};
 
-export const SignInCard = props => {
+export const SignInCard = (props: SignInCardProps) => {
   const { setIsEditingName, name, setName, fetchRooms } = props;
   return (
     <Box
