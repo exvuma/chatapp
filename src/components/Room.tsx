@@ -14,8 +14,8 @@ import { CreateMsgForm } from './CreateMsgForm';
 import { SelectNames } from './SelectNames';
 import { MsgType, RoomType } from '../types';
 
-const ENDPOINT = process.env.REACT_APP_API_ENDPOINT || '/';
 const API_HOST = process.env.REACT_APP_API_HOST || '/';
+const ENDPOINT = process.env.REACT_APP_API_ENDPOINT || '/api';
 const GET_MSGS_ENDPOINT = (roomId: string) =>
   ENDPOINT + '/rooms/' + roomId + '/messages';
 const LOCAL_DEBUG = process.env.DEBUG || false; // TODO: remove true

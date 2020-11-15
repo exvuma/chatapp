@@ -27,14 +27,13 @@
     "typescript": "^4.0.5"
   },
   "scripts": {
-    "start": "API_PORT=3001 node api.js",
+    "start": "API_PORT=3001 node server/api.js",
     "heroku-postbuild": "yarn run build:client",
-    "start:client": "react-scripts start",
     "start:server": "node server/api.js",
-    "env": "API_HOST=localhost:3001 REACT_APP_API_ENDPOINT=http://localhost:3001/api",
-    "build:client": "API_HOST=localhost:3001 REACT_APP_API_ENDPOINT=http://localhost:3001/api && react-scripts build",
-    "test:client": "API_HOST=localhost:3001 REACT_APP_API_ENDPOINT=http://localhost:3001/api && react-scripts test --env=jsdom",
-    "eject:client": "API_HOST=localhost:3001 REACT_APP_API_ENDPOINT=http://localhost:3001/api && react-scripts eject"
+    "start:client": " REACT_APP_API_ENDPOINT=http://localhost:3001/api REACT_APP_API_HOST=localhost:3001 react-scripts start",
+    "build:client": "REACT_APP_API_ENDPOINT=http://localhost:3001/api REACT_APP_API_HOST=localhost:3001 react-scripts build",
+    "test:client": "REACT_APP_API_ENDPOINT=http://localhost:3001/api REACT_APP_API_HOST=localhost:3001 react-scripts test --env=jsdom",
+    "eject:client": "REACT_APP_API_ENDPOINT=http://localhost:3001/api REACT_APP_API_HOST=localhost:3001 react-scripts eject"
   },
   "devDependencies": {},
   "browserslist": [

@@ -1,44 +1,18 @@
-import React, { useState, useEffect } from 'react';
-import {
-  Box,
-  Link,
-  Select,
-  Container,
-  TextField,
-  InputLabel,
-  Popover,
-  Checkbox,
-  ListItemText,
-  MenuItem,
-  Input,
-  Grid,
-  Paper,
-  Button,
-} from '@material-ui/core';
+import React, { useState } from 'react';
+import { TextField, Popover, Grid, Button } from '@material-ui/core';
 import { MOCK_ROOMS } from '../mocks';
 import { SelectNames } from './SelectNames';
-import sendImg from './send.png';
 import plusImg from '../static/plus.png';
-import socketIOClient from 'socket.io-client';
 
 const ENDPOINT = process.env.REACT_APP_API_ENDPOINT || '/';
 const POST_ROOM_ENDPOINT = ENDPOINT + '/rooms';
-const LOCAL_DEBUG = process.env.DEBUG || false; // TODO: remove true
 
-const socket = socketIOClient(ENDPOINT);
-const ERRORS = {
-  'no-room-name': { text: 'Please submit a room name', id: 'no-room-name' },
-  'no-members': {
-    text: 'Must select at least one member',
-    id: 'no-members',
-  },
-};
 export const CreateRoomPopover = (props: any) => {
   const { setRooms, author, members } = props;
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [merrors, setErrors] = React.useState([]);
   const [isPostingRoom, setIsPostingRoom] = useState(false);
-  const setForm = async (arg: any) => {
+  const setForm = async () => {
     console.log(merrors);
     console.log('isPostingRoom', isPostingRoom);
     // if there aren't errors close the modal
@@ -103,7 +77,7 @@ const CreateRoomForm = (props: any) => {
     setIsPostingRoom,
   } = props;
   const [roomName, setRoomName] = useState('');
-  const [fetchError, setFetchError] = useState('');
+  const [, setFetchError] = useState('');
   const [selectedNames, setSelectedNames] = useState([author]);
 
   async function postRoom(data: any) {
@@ -115,7 +89,7 @@ const CreateRoomForm = (props: any) => {
       body: JSON.stringify(data),
     })
       .then(res => res.json())
-      .then(body => {
+      .then(() => {
         console.log('Created room sucessfully with Name: ', data.name);
         cleanForm();
         setRooms(data);
