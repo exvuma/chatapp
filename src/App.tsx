@@ -16,12 +16,26 @@ import { CreateMsgForm, CreateMsgFormHeight } from './components/CreateMsgForm';
 
 import React, { useState, useEffect } from 'react';
 
-const ENDPOINT = process.env.REACT_APP_API_ENDPOINT || '/';
+const ENDPOINT = process.env.REACT_APP_API_ENDPOINT || '/api';
 const GET_ROOMS_ENDPOINT = ENDPOINT + '/rooms';
 const POST_NAME_ENDPOINT = ENDPOINT + '/names';
 
-const LOCAL_DEBUG = process.env.DEBUG || true; // TODO: remove true
+const LOCAL_DEBUG = process.env.NODE_ENV === 'development' || true; // TODO: remove true
 import { MOCK_ROOMS } from './mocks';
+// get all the members from the rooms and remove duplicates
+export const getAllMembersFromRooms = (roomsArr?: RoomType[]) => {
+  return !roomsArr
+    ? []
+    : roomsArr
+        .reduce((membsArr, room) => {
+          return room.members ? [...membsArr, ...room.members] : membsArr;
+        }, [] as RoomType['members'])
+        .reduce(
+          (membsArr, m1) =>
+            membsArr.includes(m1) ? membsArr : [...membsArr, m1],
+          [] as RoomType['members']
+        );
+};
 
 function App() {
   const [isEditingName, setIsEditingName] = useState(
@@ -34,20 +48,6 @@ function App() {
 
   const [rooms, setRooms] = useState<RoomType[]>(MOCK_ROOMS);
   const [currRoom, setCurrRoom] = useState<RoomType>(MOCK_ROOMS[0]);
-  // get all the members from the rooms and remove duplicates
-  const roomsToMembs = (roomsArr?: RoomType[]) => {
-    return !roomsArr
-      ? []
-      : roomsArr
-          .reduce((membsArr, room) => {
-            return room.members ? [...membsArr, ...room.members] : membsArr;
-          }, [] as RoomType['members'])
-          .reduce(
-            (membsArr, m1) =>
-              membsArr.includes(m1) ? membsArr : [...membsArr, m1],
-            [] as RoomType['members']
-          );
-  };
 
   const postName = async (name: string) => {
     return fetch(POST_NAME_ENDPOINT, {
@@ -84,7 +84,7 @@ function App() {
     })();
   }, [isEditingName]);
   useEffect(() => {
-    setMembers(roomsToMembs(rooms));
+    setMembers(getAllMembersFromRooms(rooms));
   }, [rooms]);
 
   async function fetchRooms() {
@@ -130,12 +130,19 @@ function App() {
             spacing={0}
             style={{
               flex: 1,
+              height: `calc(100vh - ${CreateMsgFormHeight}px)`,
             }}
           >
             <Grid
               item
               xs={3}
               style={{
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'space-between',
+                flex: 1,
+                background: '#505364',
+                color: 'white',
                 overflowY: 'scroll',
                 height: `calc(100vh - ${CreateMsgFormHeight}px)`,
               }}
@@ -157,7 +164,6 @@ function App() {
               style={{
                 background: '#f5f5f5',
                 overflow: 'scroll',
-                height: `calc(100vh - ${CreateMsgFormHeight}px)`,
               }}
             >
               <AppBar position='static' style={{ boxShadow: 'none' }}>
