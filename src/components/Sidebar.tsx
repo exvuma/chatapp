@@ -40,56 +40,41 @@ export const Sidebar = (props: any) => {
     (room: any) => room.id !== DEFAULT_ROOM_ID && room.members.includes(author)
   );
   return (
-    <div
-      style={{
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'space-between',
-        flex: 1,
-        background: '#505364',
-        color: 'white',
-      }}
-    >
-      {!!rooms && (
-        <React.Fragment>
-          <List>
-            <ListItem
-              button
-              key={DEFAULT_ROOM_ID}
-              selected={currRoomId === DEFAULT_ROOM_ID}
-              onClick={() => {
-                console.log('aer');
-                onRoomChange(DEFAULT_ROOM_ID);
-              }}
-            >
-              <ListItemText
-                primary={
-                  rooms.find((room: RoomType) => room.id === DEFAULT_ROOM_ID)
-                    .name
-                }
-              />
-            </ListItem>
-          </List>
-          <Divider />
-          <List>
-            {otherRooms.map((room: RoomType) => (
-              <ListItem
-                button
-                key={room.id}
-                selected={currRoomId === room.id}
-                onClick={() => onRoomChange(room.id)}
-              >
-                <ListItemText primary={room.name} />
-              </ListItem>
-            ))}
-          </List>
-        </React.Fragment>
-      )}
+    <React.Fragment>
+      <List>
+        <ListItem
+          button
+          key={DEFAULT_ROOM_ID}
+          selected={currRoomId === DEFAULT_ROOM_ID}
+          onClick={() => {
+            onRoomChange(DEFAULT_ROOM_ID);
+          }}
+        >
+          <ListItemText
+            primary={
+              rooms.find((room: RoomType) => room.id === DEFAULT_ROOM_ID).name
+            }
+          />
+        </ListItem>
+      </List>
+      <Divider />
+      <List>
+        {otherRooms.map((room: RoomType) => (
+          <ListItem
+            button
+            key={room.id}
+            selected={currRoomId === room.id}
+            onClick={() => onRoomChange(room.id)}
+          >
+            <ListItemText primary={room.name} />
+          </ListItem>
+        ))}
+      </List>
       <CreateRoomPopover
         setRooms={setRooms}
         author={author}
         members={members}
       />
-    </div>
+    </React.Fragment>
   );
 };

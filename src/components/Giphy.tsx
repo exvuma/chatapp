@@ -119,7 +119,10 @@ export const CreateGiphyPopover = (props: any) => {
           />
         </Box>
       </Popover>
-      <Button onClick={handleClick} style={{ alignSelf: 'start' }}>
+      <Button
+        onClick={handleClick}
+        style={{ alignSelf: 'start', padding: '0' }}
+      >
         <GifIcon />
       </Button>
     </>

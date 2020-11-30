@@ -139,7 +139,6 @@ function App() {
               style={{
                 display: 'flex',
                 flexDirection: 'column',
-                justifyContent: 'space-between',
                 flex: 1,
                 background: '#505364',
                 color: 'white',

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { TextField, Popover, Grid, Button } from '@material-ui/core';
 import { MOCK_ROOMS } from '../mocks';
 import { SelectNames } from './SelectNames';
+import AddRoundedIcon from '@material-ui/icons/AddRounded';
 import plusImg from '../static/plus.png';
 
 const ENDPOINT = process.env.REACT_APP_API_ENDPOINT || '/';
@@ -23,7 +24,7 @@ export const CreateRoomPopover = (props: any) => {
     console.log(merrors);
   };
 
-  const handleClick = (event: Event) => {
+  const handleClick = (event: MouseEvent<HTMLAnchorElement, MouseEvent>) => {
     console.log('hanlding click');
     setAnchorEl(event.currentTarget);
   };
@@ -56,11 +57,11 @@ export const CreateRoomPopover = (props: any) => {
         form='create-room-form2'
         onClick={handleClick}
         style={{
-          flex: 1,
+          flex: '0 1 0%',
           maxWidth: '10%',
         }}
       >
-        <img src={plusImg} alt={'Send'} style={{ width: '40%' }} />
+        <AddRoundedIcon style={{ color: 'white' }} />
       </Button>
     </React.Fragment>
   );
