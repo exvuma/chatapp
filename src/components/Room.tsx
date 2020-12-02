@@ -1,19 +1,9 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
-import {
-  Card,
-  Box,
-  Link,
-  TextField,
-  Typography,
-  Button,
-} from '@material-ui/core';
-import sendImg from './send.png';
+import React, { useState, useEffect, useRef } from 'react';
+import { Box, Link } from '@material-ui/core';
 import socketIOClient from 'socket.io-client';
 import { MOCK_MSGS } from '../mocks';
-import { CreateMsgForm } from './CreateMsgForm';
-import { SelectNames } from './SelectNames';
 import { MsgType, RoomType } from '../types';
-import { Gif } from '@giphy/react-components';
+import { Message } from './Message';
 
 const API_HOST = process.env.REACT_APP_API_HOST || '/';
 const ENDPOINT = process.env.REACT_APP_API_ENDPOINT || '/api';
@@ -23,12 +13,11 @@ const LOCAL_DEBUG = process.env.DEBUG || false; // TODO: remove true
 const socket = socketIOClient(API_HOST);
 
 export const Room = (props: any) => {
-  const { room, author } = props;
+  const { room } = props;
   const { id, members } = room;
-  const roomAuthor = room.author;
   const roomId = id;
   const [msgs, setMsgs] = useState<MsgType[]>([]);
-  const [inputValue, setInputValue] = useState('');
+  const [] = useState('');
   const [error, setError] = useState('');
   const buttomMsgRef = useRef(null);
   const roomMsgs = msgs.filter((msg: MsgType) => msg.roomId === id);
@@ -90,7 +79,7 @@ export const Room = (props: any) => {
     >
       {!!error.length && <Box>There were errors {error}</Box>}
       Members is this room:{' '}
-      {members.map((mem: RoomType['members']) => (
+      {members.map((mem: RoomType['members'][0]) => (
         <Link key={mem}> {mem} </Link>
       ))}
       <Box>
@@ -99,45 +88,12 @@ export const Room = (props: any) => {
           return i !== roomMsgs.length - 1 ? (
             <Message msg={msg} />
           ) : (
-            <div ref={buttomMsgRef} id={i + '-blah'}>
+            <div ref={buttomMsgRef} id={i + '-msg'}>
               <Message msg={msg} />
             </div>
           );
         })}
       </Box>
     </Box>
-  );
-};
-type MessageProps = {
-  msg: MsgType;
-};
-const Message = (props: MessageProps) => {
-  const { msg } = props;
-  const { author, message, time, gif } = msg;
-  const prettyTime = new Date(time).toUTCString().replace('GMT', '');
-  return (
-    <Card
-      style={{
-        margin: '1em',
-        padding: '1em',
-        display: 'flex',
-        flexDirection: 'column',
-      }}
-    >
-      <Typography
-        style={{ alignSelf: 'flex-end' }}
-        color='textSecondary'
-        gutterBottom
-      >
-        {prettyTime}
-      </Typography>
-      <Box display='flex' p={1} key={time} marginTop={3}>
-        <Box textAlign='left' alignSelf='flex-start' flexGrow={1}>
-          {message}
-          {gif ? <Gif gif={gif} width={300} /> : ''}
-        </Box>
-        <Link style={{ float: 'right' }}> {author}</Link>
-      </Box>
-    </Card>
   );
 };
