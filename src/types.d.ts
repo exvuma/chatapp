@@ -12,7 +12,7 @@ export type RoomType = {
 
 export type MsgType = {
   message: string;
-  gif: IGif;
+  gif: IGif | null;
   author: string;
   time: number;
   roomId: string;

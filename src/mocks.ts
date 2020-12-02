@@ -22,12 +22,19 @@ export const MOCK_ROOMS: RoomType[] = [
     members: ['Victoria', 'John'],
   },
 ];
-export const MOCK_MSGS = [
-  { message: 'Hi there', author: 'John', time: 1603741045962, roomId: 'this' },
+export const MOCK_MSGS: MsgType[] = [
+  {
+    message: 'Hi there',
+    author: 'John',
+    time: 1603741045962,
+    roomId: 'this',
+    gif: null,
+  },
   {
     message: "What's up",
     author: 'Victoria',
     time: 1603741045963,
     roomId: 'room2',
+    gif: null,
   },
 ];
