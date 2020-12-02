@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card, Box, Link, Typography } from '@material-ui/core';
+import { Card, Box, Typography } from '@material-ui/core';
 import { MsgType } from '../types';
 import { Gif } from '@giphy/react-components';
 
@@ -30,13 +30,17 @@ export const Message = (props: MessageProps) => {
         style={{
           margin: '0em 1em 1em 1em',
           padding: '1em',
-          display: 'flex',
-          flexDirection: 'column',
         }}
       >
-        <Box textAlign='left' alignSelf='flex-start' flexGrow={1}>
-          {message}
-          {gif ? <Gif gif={gif} width={300} /> : ''}
+        <Box textAlign='left'>{message}</Box>
+        <Box
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+        >
+          {gif ? <Gif gif={gif} width={400} /> : ''}
         </Box>
       </Card>
     </>
