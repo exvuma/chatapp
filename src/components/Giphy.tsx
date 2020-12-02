@@ -10,6 +10,7 @@ import { GiphyFetch } from '@giphy/js-fetch-api';
 import { Popover, Button, Grid, Box } from '@material-ui/core';
 import GifIcon from '@material-ui/icons/Gif';
 import CloseIcon from '@material-ui/icons/Close';
+import { IGif } from '../types';
 // use @giphy/js-fetch-api to fetch gifs, instantiate with your api key
 const webSDKKey =
   process.env.REACT_APP_GIPHY_KEY || 'RFq4RPD1OvDrXpIncdLiqhhOIAnuyxuH';
@@ -72,8 +73,10 @@ const SearchExperience = (props: any) => {
     </SearchContextManager>
   );
 };
-
-export const CreateGiphyPopover = (props: any) => {
+type CreateGiphyPopoverProps = {
+  setInputGif: React.Dispatch<React.SetStateAction<IGif | null>>;
+};
+export const CreateGiphyPopover = (props: CreateGiphyPopoverProps) => {
   const { setInputGif } = props;
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
 

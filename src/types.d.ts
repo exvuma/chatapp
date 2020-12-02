@@ -1,3 +1,7 @@
+import { GifOverlayProps } from '@giphy/react-components';
+
+export type IGif = GifOverlayProps['gif'];
+
 export type RoomType = {
   name: string;
   members: string[];
@@ -8,6 +12,7 @@ export type RoomType = {
 
 export type MsgType = {
   message: string;
+  gif: IGif;
   author: string;
   time: number;
   roomId: string;

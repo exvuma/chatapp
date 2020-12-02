@@ -13,6 +13,7 @@ import { MOCK_MSGS } from '../mocks';
 import { CreateMsgForm } from './CreateMsgForm';
 import { SelectNames } from './SelectNames';
 import { MsgType, RoomType } from '../types';
+import { Gif } from '@giphy/react-components';
 
 const API_HOST = process.env.REACT_APP_API_HOST || '/';
 const ENDPOINT = process.env.REACT_APP_API_ENDPOINT || '/api';
@@ -107,9 +108,12 @@ export const Room = (props: any) => {
     </Box>
   );
 };
-const Message = (props: any) => {
+type MessageProps = {
+  msg: MsgType;
+};
+const Message = (props: MessageProps) => {
   const { msg } = props;
-  const { author, message, time } = msg;
+  const { author, message, time, gif } = msg;
   const prettyTime = new Date(time).toUTCString().replace('GMT', '');
   return (
     <Card
@@ -130,6 +134,7 @@ const Message = (props: any) => {
       <Box display='flex' p={1} key={time} marginTop={3}>
         <Box textAlign='left' alignSelf='flex-start' flexGrow={1}>
           {message}
+          {gif ? <Gif gif={gif} width={300} /> : ''}
         </Box>
         <Link style={{ float: 'right' }}> {author}</Link>
       </Box>

@@ -40,7 +40,7 @@ export const Sidebar = (props: any) => {
     (room: any) => room.id !== DEFAULT_ROOM_ID && room.members.includes(author)
   );
   return (
-    <React.Fragment>
+    <div>
       <List>
         <ListItem
           button
@@ -75,6 +75,6 @@ export const Sidebar = (props: any) => {
         author={author}
         members={members}
       />
-    </React.Fragment>
+    </div>
   );
 };

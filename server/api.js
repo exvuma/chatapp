@@ -52,6 +52,7 @@ const MOCK_MSGS = [
   },
   {
     message: "What's up",
+    gif: null,
     author: 'Victoria',
     time: 1603741045963,
     roomId: 'room2',
