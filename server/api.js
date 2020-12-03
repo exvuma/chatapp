@@ -1,7 +1,6 @@
 const express = require('express');
+const path = require('path');
 var app = express();
-// var connect = require("connect");
-// var app = connect();
 const bodyParser = require('body-parser');
 // const serverless = require("serverless-http");
 var cors = require('cors');
@@ -9,10 +8,9 @@ var cors = require('cors');
 const APP_NAME = process.env.REACT_APP_APP_NAME || 'Chat App';
 const PORT = process.env.PORT || 3001;
 
-app.use(bodyParser.json());
 // app.use("/server/functions", router); // path must route to lambda
 
-app.use(express.static('./client/build'));
+app.use(express.static(path.join(__dirname, '../build/')));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 var http = require('http').createServer(app);
@@ -82,8 +80,8 @@ const appendUsers = name => {
   return homeRoom.members;
 };
 
-app.get('/*.html', (req, res) => {
-  res.sendFile(__dirname + '../build/index.html');
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, '../build/index.html'));
 });
 app.get('/socket.io', (req, res) => {
   io.emit('FromAPI', JSON.stringify(messages));
