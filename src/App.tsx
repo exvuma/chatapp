@@ -20,7 +20,7 @@ const ENDPOINT = process.env.REACT_APP_API_ENDPOINT || '/api';
 const GET_ROOMS_ENDPOINT = ENDPOINT + '/rooms';
 const POST_NAME_ENDPOINT = ENDPOINT + '/names';
 
-const LOCAL_DEBUG = process.env.NODE_ENV === 'development' || true; // TODO: remove true
+const LOCAL_DEBUG = process.env.DEBUG; //process.env.NODE_ENV === 'development';
 import { MOCK_ROOMS } from './mocks';
 // get all the members from the rooms and remove duplicates
 export const getAllMembersFromRooms = (roomsArr?: RoomType[]) => {
@@ -175,10 +175,19 @@ function App() {
                     aria-label='menu'
                   ></IconButton>
                   <Typography variant='h6' noWrap>
-                    Hi, Victoria you're in {currRoom.name} with:{' '}
-                    {currRoom.members.map((mem: RoomType['members'][0]) => (
-                      <span key={mem}> {mem} </span>
-                    ))}
+                    Hi, {name} you're in {currRoom.name}{' '}
+                    {currRoom.members.length ? (
+                      <>
+                        with:{' '}
+                        {currRoom.members
+                          .filter(mem => mem !== name)
+                          .map((mem: RoomType['members'][0]) => (
+                            <span key={mem}> {mem} </span>
+                          ))}{' '}
+                      </>
+                    ) : (
+                      ''
+                    )}
                   </Typography>
                 </Toolbar>
               </AppBar>
