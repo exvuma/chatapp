@@ -32,7 +32,7 @@
     "heroku-postbuild": "yarn run build:client",
     "start:server": "node server/api.js",
     "start:client": " REACT_APP_API_ENDPOINT=http://localhost:3001/api REACT_APP_API_HOST=localhost:3001 react-scripts start",
-    "build:client": "REACT_APP_API_ENDPOINT=http://localhost:3001/api REACT_APP_API_HOST=localhost:3001 react-scripts build",
+    "build:client": "react-scripts build",
     "test:client": "REACT_APP_API_ENDPOINT=http://localhost:3001/api REACT_APP_API_HOST=localhost:3001 react-scripts test --env=jsdom",
     "eject:client": "REACT_APP_API_ENDPOINT=http://localhost:3001/api REACT_APP_API_HOST=localhost:3001 react-scripts eject"
   },
