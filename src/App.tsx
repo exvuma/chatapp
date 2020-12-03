@@ -59,7 +59,7 @@ function App() {
     })
       .then(res => res.json())
       .then(body => {
-        console.log('posted name', body);
+        console.log('posted name ', body);
       })
       .catch(error => {
         console.error('Error: ', error);

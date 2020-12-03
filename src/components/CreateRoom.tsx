@@ -4,34 +4,30 @@ import { MOCK_ROOMS } from '../mocks';
 import { SelectNames } from './SelectNames';
 import AddRoundedIcon from '@material-ui/icons/AddRounded';
 import plusImg from '../static/plus.png';
+import { ChangeEvent } from 'react';
 
 const ENDPOINT = process.env.REACT_APP_API_ENDPOINT || '/';
 const POST_ROOM_ENDPOINT = ENDPOINT + '/rooms';
 
 export const CreateRoomPopover = (props: any) => {
   const { setRooms, author, members } = props;
-  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [anchorEl, setAnchorEl] = React.useState<EventTarget | null>(null);
   const [merrors, setErrors] = React.useState([]);
   const [isPostingRoom, setIsPostingRoom] = useState(false);
   const setForm = async () => {
-    console.log(merrors);
-    console.log('isPostingRoom', isPostingRoom);
+    console.error(merrors);
     // if there aren't errors close the modal
     if (!merrors.find(err => err !== '')) {
-      console.log('closing modal');
       setAnchorEl(null);
     }
-    console.log(merrors);
   };
 
-  const handleClick = (event: MouseEvent<HTMLAnchorElement, MouseEvent>) => {
-    console.log('hanlding click');
+  const handleClick = (event: React.MouseEvent<HTMLInputElement>) => {
     setAnchorEl(event.currentTarget);
   };
 
   const handleClose = () => {
     setAnchorEl(null);
-    console.log('closing popover');
   };
 
   const open = Boolean(anchorEl);
@@ -46,7 +42,7 @@ export const CreateRoomPopover = (props: any) => {
           author={author}
           members={members}
           setErrors={(e: any) => {
-            console.log('setting errors', merrors, e);
+            console.log('setting errors ', merrors, e);
             setErrors(e);
           }}
           errors={merrors}
@@ -114,7 +110,7 @@ const CreateRoomForm = (props: any) => {
     setIsPostingRoom(false);
     setForm();
   };
-  const appendRoom = async (event: Event) => {
+  const appendRoom = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setIsPostingRoom(true);
     //validate inputs
@@ -140,7 +136,9 @@ const CreateRoomForm = (props: any) => {
     await postRoom(roomData);
   };
 
-  const handleInputMsgChange = (event: Event) => {
+  const handleInputMsgChange = (
+    event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     setRoomName(event.target.value);
   };
 
