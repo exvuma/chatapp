@@ -78,10 +78,6 @@ export const Room = (props: any) => {
       }}
     >
       {!!error.length && <Box>There were errors {error}</Box>}
-      Members is this room:{' '}
-      {members.map((mem: RoomType['members'][0]) => (
-        <Link key={mem}> {mem} </Link>
-      ))}
       <Box>
         {roomMsgs.map((msg, i) => {
           // To use ref must not be functional component,so use div

@@ -162,6 +162,7 @@ function App() {
               xs={9}
               style={{
                 background: '#f5f5f5',
+                height: `calc(100vh - ${CreateMsgFormHeight}px)`,
                 overflow: 'scroll',
               }}
             >
@@ -174,7 +175,10 @@ function App() {
                     aria-label='menu'
                   ></IconButton>
                   <Typography variant='h6' noWrap>
-                    Hi, you're chatting as {name}
+                    Hi, Victoria you're in {currRoom.name} with:{' '}
+                    {currRoom.members.map((mem: RoomType['members'][0]) => (
+                      <span key={mem}> {mem} </span>
+                    ))}
                   </Typography>
                 </Toolbar>
               </AppBar>
@@ -183,9 +187,7 @@ function App() {
               </Box>
             </Grid>
           </Grid>
-          <div style={{ height: `${CreateMsgFormHeight}px` }}>
-            <CreateMsgForm room={currRoom} author={name} />
-          </div>
+          <CreateMsgForm room={currRoom} author={name} />
         </div>
       )}
     </React.Fragment>

@@ -6,11 +6,12 @@ import {
   SearchContextManager, // the context manager, includes the Context.Provider
   SuggestionBar, // an optional UI component that displays trending searches and channel / username results
 } from '@giphy/react-components';
-import { GiphyFetch } from '@giphy/js-fetch-api';
 import { Popover, Button, Grid, Box } from '@material-ui/core';
 import GifIcon from '@material-ui/icons/Gif';
 import CloseIcon from '@material-ui/icons/Close';
 import { IGif } from '../types';
+
+const POPOVER_WIDTH = 800;
 // use @giphy/js-fetch-api to fetch gifs, instantiate with your api key
 const webSDKKey =
   process.env.REACT_APP_GIPHY_KEY || 'RFq4RPD1OvDrXpIncdLiqhhOIAnuyxuH';
@@ -48,7 +49,7 @@ const GiphyComponents = (props: any) => {
           key={searchKey}
           noResultsMessage={MockGrid}
           columns={3}
-          width={800}
+          width={POPOVER_WIDTH}
           fetchGifs={fetchGifs}
           onGifClick={(gif, e) => {
             e.preventDefault();
@@ -68,7 +69,7 @@ const GiphyComponents = (props: any) => {
 const SearchExperience = (props: any) => {
   const { setInputGif, handleClose } = props;
   return (
-    <SearchContextManager apiKey={webSDKKey}>
+    <SearchContextManager apiKey={webSDKKey} initialTerm={'raise'}>
       <GiphyComponents setInputGif={setInputGif} handleClose={handleClose} />
     </SearchContextManager>
   );
@@ -96,7 +97,6 @@ export const CreateGiphyPopover = (props: CreateGiphyPopoverProps) => {
         open={open}
         anchorEl={anchorEl}
         onClose={handleClose}
-        marginThreshold={16}
         anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
         transformOrigin={{ vertical: 'bottom', horizontal: 'left' }}
       >
@@ -105,6 +105,7 @@ export const CreateGiphyPopover = (props: CreateGiphyPopoverProps) => {
             display: 'flex',
             flexDirection: 'column',
             padding: '1rem',
+            width: `${POPOVER_WIDTH}px`,
             height: '40vh',
           }}
         >

@@ -5,11 +5,12 @@ import SendIcon from '@material-ui/icons/Send';
 import { CreateGiphyPopover } from './Giphy';
 import socketIOClient from 'socket.io-client';
 import { RoomType, IGif } from '../types';
+import { MOCK_GIF } from '../mocks';
 
 const API_HOST = process.env.REACT_APP_API_HOST || '/';
 const socket = socketIOClient(API_HOST);
 
-export const CreateMsgFormHeight = '100';
+export const CreateMsgFormHeight = '150';
 
 type CreateMsgFormProps = {
   room: RoomType;
@@ -18,7 +19,7 @@ type CreateMsgFormProps = {
 export const CreateMsgForm: React.FC<CreateMsgFormProps> = props => {
   const { room, author } = props;
   const [inputValue, setInputValue] = useState('');
-  const [inputGif, setInputGif] = useState<IGif | null>(null);
+  const [inputGif, setInputGif] = useState<IGif | null>(null); //MOCK_GIF);
 
   useEffect(() => {
     if (inputGif) {
@@ -27,7 +28,6 @@ export const CreateMsgForm: React.FC<CreateMsgFormProps> = props => {
   }, [inputGif]);
 
   const appendMsg = (event: FormEvent<HTMLFormElement>) => {
-    console.log('appendmsf');
     event.preventDefault();
     const time = Date.now();
     socket.emit('NewMessage', {
@@ -73,17 +73,12 @@ export const CreateMsgForm: React.FC<CreateMsgFormProps> = props => {
       >
         <TextField
           label={'Message here'}
-          type={'string'}
           id='standard-basic'
           value={inputValue}
           onChange={handleInputMsgChange}
           style={{ flex: 2 }}
-        />
-        {inputGif ? (
-          <Gif gif={inputGif} width={300} height={CreateMsgFormHeight} />
-        ) : (
-          ''
-        )}
+        ></TextField>
+
         <Button
           style={{
             padding: ' 1.6rem',
@@ -93,7 +88,19 @@ export const CreateMsgForm: React.FC<CreateMsgFormProps> = props => {
           <SendIcon style={{ width: '40px' }} />
         </Button>
       </form>
-      <CreateGiphyPopover setInputGif={setInputGif} />
+      <div
+        style={{
+          flexDirection: 'row',
+          display: 'flex',
+        }}
+      >
+        {inputGif ? (
+          <Gif gif={inputGif} width={parseInt(CreateMsgFormHeight) - 100} />
+        ) : (
+          ''
+        )}
+        <CreateGiphyPopover setInputGif={setInputGif} />
+      </div>
     </Box>
   );
 };

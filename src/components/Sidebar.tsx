@@ -41,22 +41,25 @@ export const Sidebar = (props: any) => {
   );
   return (
     <div>
-      <List>
-        <ListItem
-          button
-          key={DEFAULT_ROOM_ID}
-          selected={currRoomId === DEFAULT_ROOM_ID}
-          onClick={() => {
-            onRoomChange(DEFAULT_ROOM_ID);
-          }}
-        >
-          <ListItemText
-            primary={
-              rooms.find((room: RoomType) => room.id === DEFAULT_ROOM_ID).name
-            }
-          />
-        </ListItem>
-      </List>
+      <ListItem
+        button
+        key={DEFAULT_ROOM_ID}
+        selected={currRoomId === DEFAULT_ROOM_ID}
+        onClick={() => {
+          onRoomChange(DEFAULT_ROOM_ID);
+        }}
+      >
+        <ListItemText
+          primary={
+            rooms.find((room: RoomType) => room.id === DEFAULT_ROOM_ID).name
+          }
+        />
+        <CreateRoomPopover
+          setRooms={setRooms}
+          author={author}
+          members={members}
+        />
+      </ListItem>
       <Divider />
       <List>
         {otherRooms.map((room: RoomType) => (
@@ -70,11 +73,6 @@ export const Sidebar = (props: any) => {
           </ListItem>
         ))}
       </List>
-      <CreateRoomPopover
-        setRooms={setRooms}
-        author={author}
-        members={members}
-      />
     </div>
   );
 };
