@@ -32,3 +32,4 @@ TO test on your own Heroku account
 
 - Set up a Heroku site
 - Connect the Heroku site to your repo (e.g. https://github.com/exvuma/chatapp)
+- Set config vars `REACT_APP_API_ENDPOINT` and `REACT_APP_API_HOST` in heroku config
